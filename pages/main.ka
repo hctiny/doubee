@@ -1,0 +1,79 @@
+<div class="page page-current main">
+	<div class="mui-off-canvas-wrap mui-draggable mui-slide-in">
+		<aside id="offCanvasSide" class="mui-off-canvas-right">
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view mui-table-view-inverted mui-table-view-noline">
+						<li class="mui-table-view-cell">
+							<a>
+								<img class="headImg mui-pull-right" src="img/head.jpg" />
+							</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a>
+								<label class="mui-pull-right font-size12">杭城吴彦祖</label>
+							</a>
+						</li>
+					</ul>
+					<ul class="mui-table-view mui-table-view-inverted" style="margin-top: 1rem;">
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right">
+								我的收藏
+							</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right">
+								我的爱好
+							</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right">
+								手气不错
+							</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right">
+								设置
+							</a>
+						</li>
+						<li class="mui-table-view-cell">
+							<a class="mui-navigate-right">
+								关于
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</aside>
+		<div class="mui-inner-wrap">
+			<div class="mui-content mui-scroll-wrapper">
+				<div class="mui-scroll content">
+
+				</div>
+				<footer>
+					<div class="flex flex-spacebetween">
+						<a class="font-white iconfont icon-shuaxin">
+							刷新
+						</a>
+						<a class="font-white iconfont icon-icon01">
+							订阅
+						</a>
+						<a class="font-white iconfont icon-ttpodicon1 flex-grow">
+							继续观看
+						</a>
+						<a class="font-white iconfont icon-gengduo1" href="#offCanvasSide"></a>
+					</div>
+				</footer>
+			</div>
+			<div class="mui-off-canvas-backdrop"></div>
+		</div>
+
+	</div>
+	<script>
+		(function() {
+			mui(".main .mui-scroll-wrapper").scroll();
+			mui('.main .mui-off-canvas-wrap').offCanvas();
+			document.querySelector(".main .content").appendChild(Kimkra.posterView());
+		})()
+	</script>
+</div>

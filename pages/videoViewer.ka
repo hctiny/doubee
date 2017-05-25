@@ -1,0 +1,120 @@
+<div class="page page-current videoViewer">
+	<div class="mui-slider mui-fullscreen">
+		<div class="mui-slider-group">
+		</div>
+	</div>
+	<script>
+		(function($) {
+			function bindEvent() {
+				function dispatchTouch(e) {
+					if(!Kimkra.dispatchTouch) {
+						return;
+					}
+					var point = e.changedTouches[0];
+					var p = e.target.querySelector("iframe").contentDocument.elementFromPoint(point.clientX, point.clientY);
+					var _e = new TouchEvent(e.type, {
+						bubbles: true,
+						changedTouches: e.changedTouches,
+						touches: e.touches,
+					});
+					p && (p.dispatchEvent(_e));
+				}
+
+				function getVideoUrl(vid) {
+					return Kimkra.Util.root() + "index.html?m=pages&a=videoViewer&vid=" + vid;
+				}
+				document.querySelector(".mui-slider-group").addEventListener("touchmove", function(e) {
+					dispatchTouch.call(this, e);
+				});
+				document.querySelector(".mui-slider-group").addEventListener("touchstart", function(e) {
+					dispatchTouch.call(this, e);
+				});
+				document.querySelector(".mui-slider-group").addEventListener("touchend", function(e) {
+					dispatchTouch.call(this, e);
+				});
+				document.querySelector(".mui-slider-group").addEventListener("touchcancel", function(e) {
+					dispatchTouch.call(this, e);
+				});
+				window.addEventListener("next", function() {
+					autoslider.nextItem();
+				});
+				window.addEventListener("anchorBack", function(e) {
+					if(e.detail.hash === "control") {
+						document.querySelector(".mui-active iframe").contentWindow.dispatchEvent(new CustomEvent("hiddenControl"));
+					}
+				})
+				document.querySelector(".videoViewer .mui-slider").addEventListener('slide', function(e) {
+					var prepage;
+					var currentPage = autoslider.pages[e.detail.slideNumber];
+					//					history.replaceState('', '', getVideoUrl(currentPage[0].element.getAttribute("vid")));
+					autoslider.currentPage = currentPage[0];
+					autoslider.currentPage.element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("showVideo"));
+					var currentIndex = ~~(currentPage[0].element.id);
+					var dataLength = Kimkra.data.videoInfo.length;
+
+					if(e.detail.direction === "left") {
+						prepage = autoslider.pages[e.detail.slideNumber - 1];
+						if(currentIndex > 0 && (currentIndex + 1) < dataLength) {
+							autoslider.nextNode(makeViedoView(currentIndex + 1));
+						}
+					} else {
+						prepage = autoslider.pages[e.detail.slideNumber + 1];
+						if(currentIndex > 0 && (currentIndex + 2) < dataLength) {
+							autoslider.prevNode(makeViedoView(currentIndex - 1));
+						}
+					}
+
+					prepage && (prepage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("pause")));
+					currentPage && (currentPage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("loadDiscuss")))
+//					currentPage && (currentPage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("play")))
+				});
+				var autoslider = Kimkra.data.as = $('.videoViewer .mui-slider').autoslider();
+			}
+
+			var dom = '<div class="mui-slider-item" id="$number"><iframe id="iframe$number" src="video.html?id=$number"></iframe></div>'
+
+			function makeViedoView(index, active) {
+				var d = document.createElement("div");
+				d.innerHTML = dom.replace(/\$number/g, index);
+				d = d.childNodes[0]
+				if(active) {
+					d.classList.add("mui-active");
+				}
+				d.setAttribute("vid", Kimkra.data.videoInfo[index].id);
+				return d;
+			}
+
+			function bindData() {
+				var params = Kimkra.Util.getQueryString(location.href);
+				var currentId = params["vid"];
+				var currentIndex = Kimkra.data.videoInfo.findIndex(function(v) {
+					return v.id == currentId;
+				})
+				var firstIndex;
+				if((currentIndex + 1) >= Kimkra.data.videoInfo.length) {
+					
+				}
+				if(currentIndex === 0) {
+					//第一页为当前页
+					firstIndex = makeViedoView(currentIndex, true);
+					document.querySelector(".mui-slider-group").appendChild(firstIndex);
+					document.querySelector(".mui-slider-group").appendChild(makeViedoView(currentIndex + 1));
+					document.querySelector(".mui-slider-group").appendChild(makeViedoView(currentIndex + 2));
+				} else {
+					//正常加载
+					firstIndex = makeViedoView(currentIndex, true);
+					document.querySelector(".mui-slider-group").appendChild(makeViedoView(currentIndex - 1));
+					document.querySelector(".mui-slider-group").appendChild(firstIndex);
+					document.querySelector(".mui-slider-group").appendChild(makeViedoView(currentIndex + 1));
+				}
+				firstIndex.querySelector("iframe").addEventListener("load", function() {
+					setTimeout(function() {
+						this.contentWindow.dispatchEvent(new CustomEvent("loadDiscuss"));
+					}.call(this), 500)
+				})
+			}
+			bindData();
+			setTimeout(bindEvent, 0);
+		})(mui);
+	</script>
+</div>

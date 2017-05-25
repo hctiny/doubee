@@ -1,0 +1,38 @@
+@font-face {
+	font-family: "iconfont";
+	src: url('../fonts/iconfont.ttf') format('truetype')
+}
+
+.iconfont {
+	font-family: "iconfont" !important;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.iconfont:before {
+	font-size: 1.2rem;
+	line-height: 1.2rem;
+}
+
+.icon-hongbao:before { content: "\e600"; font-size: 1.5rem; line-height: 1.5rem; }
+
+.icon-chatlist:before { content: "\e602"; margin-right: 0.5rem; font-size: 1.3rem; line-height: 1.3rem;}
+
+.icon-fenxiang:before { content: "\e631"; font-size: 1.6rem; line-height: 1.6rem;}
+
+.icon-ttpodicon:before { content: "\e61f"; font-size: 2rem; line-height: 1rem;}
+
+.icon-ttpodicon1:before { content: "\e638"; }
+
+.icon-yonghu:before { content: "\e6db"; }
+
+.icon-icon01:before { content: "\e612"; }
+
+.icon-gengduo:before { content: "\e766"; }
+
+.icon-zan:before { content: "\e60d"; font-size: 2rem; line-height: 2rem;}
+
+.icon-gengduo1:before { content: "\e6ff"; }
+
+.icon-shuaxin:before { content: "\e6bf"; }
