@@ -27,6 +27,7 @@
 				border: 0;
 				position: absolute;
 				top: 0;
+				display: none;
 			}
 			
 			img {
@@ -85,14 +86,7 @@
 				</div>
 			</div>
 		</div>
-		<script src="js/mui.fit.js"></script>
-		<!--
-        	作者：a36er@qq.com
-        	时间：2017-05-26
-        	描述：
-        	
-        	简化mui，只需要trigger和scroll
-        -->
+		<script type="text/javascript" src="js/mui.scroll.js"></script>
 		<script>
 			(function() {
 				var params = parent.Kimkra.Util.getQueryString(location.href);
@@ -117,16 +111,17 @@
 							//穿透点击事件
 							var point = e.detail.touches[0];
 							var p = iframe.contentDocument.elementFromPoint(point.clientX, point.clientY);
-							mui.trigger(p, "click");
+							p.dispatchEvent(new MouseEvent("click"));
 						}
 						if(e.target.className === "posterImg") {
 							//如果第首次播放
 							e.target.style.zIndex = 0;
 							played = true;
 							var point = e.detail.touches[0];
-							var p = iframe.contentDocument.elementFromPoint(point.clientX, point.clientY);
-							mui.trigger(p, "click");
+							var p = iframe.contentDocument.querySelector(".x-video-button");
+							p.dispatchEvent(new MouseEvent("click"));
 						}
+						console.log(p);
 					});
 					window.addEventListener("touchend", function(e) {
 						if(e.target.nodeName === "IFRAME") {
@@ -153,8 +148,7 @@
 						if(playButton) {
 							document.querySelector(".posterImg").style.zIndex = 0;
 							played = true;
-							mui.trigger(playButton, "click");
-							mui.trigger(playButton, "click");
+							playButton.dispatchEvent(new MouseEvent("click"));
 						}
 					}
 					window.addEventListener("playEnd", function(e) {
@@ -168,7 +162,7 @@
 							discusswrapper.innerHTML = "";
 							discusswrapper.appendChild(parent.Kimkra.discussView());
 						}
-						autoPlay.call(this);
+//						autoPlay.call(this);
 					});
 
 					function hideVideo() {
@@ -205,11 +199,19 @@
 							if(href.indexOf("#control") === -1) {
 								parent.Kimkra.router.load(href + "#control");
 							}
-							setTimeout(function() {
-								//延迟50ms执行获取焦点 防止x5莫名其妙的失去焦点一次
-								//call防止iOS不触发focus
-								e.target.focus();
-							}.call(this), 50)
+							if(mui.os.ios) {
+								setTimeout(function() {
+									//call防止iOS不触发focus
+									e.target.focus();
+								}.call(this), 50)
+							}
+							if(mui.os.android) {
+								setTimeout(function() {
+									//延迟50ms执行获取焦点 防止x5莫名其妙的失去焦点一次
+									e.target.focus();
+								}, 50)
+							}
+
 						} else {
 							parent.document.querySelector("#iframe" + params.id).style.pointerEvents = "none";
 							this.classList.remove("active");
@@ -224,7 +226,7 @@
 					});
 
 					document.querySelector(".commitDiscuss").addEventListener("tap", function() {
-						mui.toast("发表成功!");
+						parent.mui.toast("发表成功!");
 						document.querySelector("textarea").value = "";
 					});
 				};
@@ -244,7 +246,7 @@
 							parent.dispatchEvent(new CustomEvent("next"));
 						}
 					})
-				}, 0)
+				}, 50)
 			})()
 		</script>
 	</body>

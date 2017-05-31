@@ -5,6 +5,8 @@
 	</div>
 	<script>
 		(function($) {
+			var sliderGroup = document.querySelector(".videoViewer .mui-slider-group");
+
 			function bindEvent() {
 				function dispatchTouch(e) {
 					if(!Kimkra.dispatchTouch) {
@@ -23,16 +25,16 @@
 				function getVideoUrl(vid) {
 					return Kimkra.Util.root() + "index.html?m=pages&a=videoViewer&vid=" + vid;
 				}
-				document.querySelector(".mui-slider-group").addEventListener("touchmove", function(e) {
+				sliderGroup.addEventListener("touchmove", function(e) {
 					dispatchTouch.call(this, e);
 				});
-				document.querySelector(".mui-slider-group").addEventListener("touchstart", function(e) {
+				sliderGroup.addEventListener("touchstart", function(e) {
 					dispatchTouch.call(this, e);
 				});
-				document.querySelector(".mui-slider-group").addEventListener("touchend", function(e) {
+				sliderGroup.addEventListener("touchend", function(e) {
 					dispatchTouch.call(this, e);
 				});
-				document.querySelector(".mui-slider-group").addEventListener("touchcancel", function(e) {
+				sliderGroup.addEventListener("touchcancel", function(e) {
 					dispatchTouch.call(this, e);
 				});
 				window.addEventListener("next", function() {
@@ -66,7 +68,7 @@
 
 					prepage && (prepage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("pause")));
 					currentPage && (currentPage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("loadDiscuss")))
-//					currentPage && (currentPage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("play")))
+					//					currentPage && (currentPage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("play")))
 				});
 				var autoslider = Kimkra.data.as = $('.videoViewer .mui-slider').autoslider();
 			}
@@ -92,20 +94,20 @@
 				})
 				var firstIndex;
 				if((currentIndex + 1) >= Kimkra.data.videoInfo.length) {
-					
+
 				}
 				if(currentIndex === 0) {
 					//第一页为当前页
 					firstIndex = makeViedoView(currentIndex, true);
-					document.querySelector(".mui-slider-group").appendChild(firstIndex);
-					document.querySelector(".mui-slider-group").appendChild(makeViedoView(currentIndex + 1));
-					document.querySelector(".mui-slider-group").appendChild(makeViedoView(currentIndex + 2));
+					sliderGroup.appendChild(firstIndex);
+					sliderGroup.appendChild(makeViedoView(currentIndex + 1));
+					sliderGroup.appendChild(makeViedoView(currentIndex + 2));
 				} else {
 					//正常加载
 					firstIndex = makeViedoView(currentIndex, true);
-					document.querySelector(".mui-slider-group").appendChild(makeViedoView(currentIndex - 1));
-					document.querySelector(".mui-slider-group").appendChild(firstIndex);
-					document.querySelector(".mui-slider-group").appendChild(makeViedoView(currentIndex + 1));
+					sliderGroup.appendChild(makeViedoView(currentIndex - 1));
+					sliderGroup.appendChild(firstIndex);
+					sliderGroup.appendChild(makeViedoView(currentIndex + 1));
 				}
 				firstIndex.querySelector("iframe").addEventListener("load", function() {
 					setTimeout(function() {

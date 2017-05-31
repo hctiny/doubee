@@ -48,14 +48,14 @@
 		<div class="mui-inner-wrap">
 			<div class="mui-content mui-scroll-wrapper">
 				<div class="mui-scroll content">
-
+					<ul class="mui-table-view"></ul>
 				</div>
 				<footer>
 					<div class="flex flex-spacebetween">
 						<a class="font-white iconfont icon-shuaxin">
 							刷新
 						</a>
-						<a class="font-white iconfont icon-icon01">
+						<a class="font-white iconfont icon-icon01" href="index.html?m=pages&a=rss">
 							订阅
 						</a>
 						<a class="font-white iconfont icon-ttpodicon1 flex-grow">
@@ -73,7 +73,30 @@
 		(function() {
 			mui(".main .mui-scroll-wrapper").scroll();
 			mui('.main .mui-off-canvas-wrap').offCanvas();
-			document.querySelector(".main .content").appendChild(Kimkra.posterView());
+			mui(".main .mui-scroll.content").pullToRefresh({
+				down: {
+					callback: function() {
+						var self = this;
+						setTimeout(function() {
+							var ul = self.element.querySelector('.mui-table-view');
+							ul.innerHTML="";
+							ul.appendChild(Kimkra.posterView());
+							self.endPullDownToRefresh();
+						}, 1000);
+					}
+				},
+				up: {
+					auto: true,
+					callback: function() {
+						var self = this;
+						setTimeout(function() {
+							var ul = self.element.querySelector('.mui-table-view');
+							ul.appendChild(Kimkra.posterView());
+							self.endPullUpToRefresh();
+						}, 1000);
+					}
+				}
+			});
 		})()
 	</script>
 </div>

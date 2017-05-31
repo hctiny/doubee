@@ -1,3 +1,78 @@
+.mui-pull-top-tips {
+	position: absolute;
+	top: -20px;
+	left: 50%;
+	margin-left: -25px;
+	width: 40px;
+	height: 40px;
+	border-radius: 100%;
+	z-index: 1;
+}
+
+.mui-bar~.mui-pull-top-tips {
+	top: 24px;
+}
+
+.mui-pull-top-wrapper {
+	width: 42px;
+	height: 42px;
+	display: block;
+	text-align: center;
+	background-color: #efeff4;
+	border: 1px solid #ddd;
+	border-radius: 25px;
+	background-clip: padding-box;
+	box-shadow: 0 4px 10px #bbb;
+	overflow: hidden;
+}
+
+.mui-pull-top-tips.mui-transitioning {
+	-webkit-transition-duration: 200ms;
+	transition-duration: 200ms;
+}
+
+.mui-pull-top-tips .mui-pull-loading {
+	/*-webkit-backface-visibility: hidden;
+				-webkit-transition-duration: 400ms;
+				transition-duration: 400ms;*/
+	margin: 0;
+}
+
+.mui-pull-top-wrapper .mui-icon,
+.mui-pull-top-wrapper .mui-spinner {
+	margin-top: 7px;
+}
+
+.mui-pull-top-wrapper .mui-icon.mui-reverse {
+	/*-webkit-transform: rotate(180deg) translateZ(0);*/
+}
+
+.mui-pull-bottom-tips {
+	text-align: center;
+	background-color: #efeff4;
+	font-size: 15px;
+	line-height: 40px;
+	color: #777;
+}
+
+.mui-pull-top-canvas {
+	overflow: hidden;
+	background-color: #fafafa;
+	border-radius: 40px;
+	box-shadow: 0 4px 10px #bbb;
+	width: 40px;
+	height: 40px;
+	margin: 0 auto;
+}
+
+.mui-pull-top-canvas canvas {
+	width: 40px;
+}
+
+.mui-slider-indicator.mui-segmented-control {
+	background-color: #efeff4;
+}
+
 footer {
 	position: absolute;
 	bottom: 0;
@@ -22,16 +97,24 @@ footer a {
 	padding-bottom: 2rem;
 }
 
-.content>.content-imgView {
+.content .mui-table-view,
+.rssDetail .mui-table-view{
+	background: none;
+}
+
+.rssDetail .content-imgView,
+.content .content-imgView {
 	background: #FFF;
 	position: relative;
 }
 
-.content>.content-imgView>.poster {
+.rssDetail .content-imgView>.poster,
+.content .content-imgView>.poster {
 	position: relative;
 }
 
-.content>.content-imgView>.poster>.play {
+.rssDetail .content-imgView>.poster>.play,
+.content .content-imgView>.poster>.play {
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 100% 100%;
@@ -39,7 +122,8 @@ footer a {
 	display: block;
 }
 
-.content>.content-imgView>.poster>.during {
+.rssDetail .content-imgView>.poster>.during,
+.content .content-imgView>.poster>.during {
 	position: absolute;
 	bottom: 1rem;
 	right: 1rem;
@@ -53,17 +137,20 @@ footer a {
 	margin: 0;
 }
 
-.content>.content-imgView>.title {
+.rssDetail .content-imgView>.title,
+.content .content-imgView>.title {
 	padding: 0.5rem 1rem;
 	margin: 0;
 	font-weight: normal;
 }
 
-.content>.content-imgView>.info-bar {
+.rssDetail .content-imgView>.info-bar,
+.content .content-imgView>.info-bar {
 	padding: 0rem 1rem 0.5rem 1rem;
 }
 
-.content>.content-imgView>.info-bar>label {
+.rssDetail .content-imgView>.info-bar>label,
+.content .content-imgView>.info-bar>label {
 	margin-right: 1rem;
 }
 
@@ -85,4 +172,36 @@ iframe {
 	height: 100%;
 	border: 0;
 	pointer-events: none;
+}
+
+.rss .updateTime {
+	margin-left: 0.5rem;
+}
+
+.rss .updateTime:after {
+	content: "更新";
+}
+
+.rssDetail header {
+	background: #f8f8f8;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	z-index: 5;
+}
+
+.rssDetail .mui-scroll {
+	margin-top: 4.5rem;
+	padding-bottom: 4.5rem;
+}
+
+.rssDetail .content-imgView {
+	background: #f8f8f8;
+}
+
+.rss .mui-navigate-right>.flex{
+	pointer-events: none;
+}
+.rssDetail .through-line>span{
+	font-size: 1rem;
 }

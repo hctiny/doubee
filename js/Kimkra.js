@@ -438,18 +438,16 @@ function($) {
 		$.showIndicator();
 		var $d = obj.$doc.cloneNode(true);
 		if(from == FROM.popStatus) {
-//			window.history.replaceState('', '', obj.url);
+			window.history.replaceState('', '', obj.url);
 		} else {
 			window.history.pushState('', '', obj.url);
-			this.histroys.pushMap(location.href);
 		}
+		this.histroys.pushMap(location.href);
 		var currentDoc = this.pageGroup.querySelector(".page-current");
 		this.currentPage = obj.url;
 		this._animateDocument($d, currentDoc, direct, obj.param);
 	};
 	Router.prototype._onPopState = function(e) {
-		console.log(this.currentPage);
-		console.log(location.href);
 		if(this.currentPage.indexOf("#") === -1) {
 			var direction = this.histroys.judgeDirect(this.currentPage, location.href);
 			if(direction === "exit") {
@@ -497,7 +495,7 @@ function($) {
 		}
 		return false;
 	}
-	mui(document).on('click', 'a', function(e) {
+	mui(document).on('tap', 'a', function(e) {
 		var $target = e.target;
 		if(isInRouterBlackList($target)) {
 			return;

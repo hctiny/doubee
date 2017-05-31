@@ -336,12 +336,15 @@ body {
 	padding: 0.5rem;
 }
 
+.rss img.rssHead,
 .discussWrapper>.discuss img.discussHead {
 	width: 2.5rem;
 	border-radius: 50%;
 	margin-right: 0.5rem;
 }
-
+.rss img.rssHead{
+	width: 3.5rem;
+}
 .discuss .icon-zan:before {
 	font-size: 1.8rem;
 	line-height: 1rem;
