@@ -205,3 +205,43 @@ iframe {
 .rssDetail .through-line>span{
 	font-size: 1rem;
 }
+
+.myTag{
+	background-color: #ddd;
+}
+
+.myTag .tagList{
+	padding: 0;
+	margin: 2rem 0;
+}
+
+.myTag .tagRow{
+	display: -webkit-flex;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content:center;
+}
+
+.myTag .tagItem{
+	display: inline;
+	padding: 0.5rem 1.3rem 0.5rem 1.3rem;
+	margin: 0.5rem;
+	background-color: #f8f8f8;
+	border-radius: 1rem;
+	line-height: 1.1rem;
+}
+
+.myTag .tagItem.active{
+	background-color: #ff7575;
+	color: #fff;
+}
+
+.myTag .tagDescription{
+	text-align: center;
+	position: absolute;
+	bottom: 0.5rem;
+	font-size: 1rem;
+	line-height: 1.2rem;
+	width: 100%;
+}

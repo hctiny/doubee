@@ -283,4 +283,65 @@
 		});
 		return autoslider;
 	};
+
+	Kimkra.tagView = function(data) {
+		var clientWidth = document.body.clientWidth;
+		var fontSize = getStyle(document.getElementsByTagName('html')[0], 'font-size');
+		fontSize = fontSize.substr(0, fontSize.length - 2);
+		var maxCharLength = clientWidth / fontSize;
+		maxCharLength = parseInt(maxCharLength);
+		var tagList = document.createDocumentFragment();
+		var index = 0,
+			totalCharLength = 0,
+			tempCharLength = maxCharLength;
+		var tagRow = _createElement('div', {
+			class: "tagRow"
+		});
+		for(var i = 0; i < data.length; i++) {
+			var temp = data[i];
+			var charLength = temp.name.length;
+			var classList = {
+				class: "tagItem",
+				innerText: temp.name
+			}
+			if(temp.selected){
+				classList['class'] = "tagItem active";
+			}
+			var tagItem = _createElement('div', classList);
+			if(index % 2 == 0) {
+				tempCharLength = parseInt(maxCharLength * 0.75)
+			} else {
+				tempCharLength = maxCharLength;
+			}
+			if(totalCharLength + charLength + 3.5 > tempCharLength) {
+				tagList.appendChild(tagRow);
+				tagRow = _createElement('div', {
+					class: "tagRow"
+				});
+				totalCharLength = 0;
+				index++;
+			}
+			tagRow.appendChild(tagItem);
+			totalCharLength += charLength + 3.5;
+		}
+		tagList.appendChild(tagRow);
+		return tagList;
+	}
+
+	/**
+	 * 获取元素css属性
+	 */
+	function getStyle(obj, attr) {
+		var ie = !+"\v1"; //简单判断ie6~8
+		if(attr == "backgroundPosition") { //IE6~8不兼容backgroundPosition写法，识别backgroundPositionX/Y
+			if(ie) {
+				return obj.currentStyle.backgroundPositionX + " " + obj.currentStyle.backgroundPositionY;
+			}
+		}
+		if(obj.currentStyle) {
+			return obj.currentStyle[attr];
+		} else {
+			return document.defaultView.getComputedStyle(obj, null)[attr];
+		}
+	}
 })(Kimkra)

@@ -1,0 +1,23 @@
+<div class="page page-current myTag">
+	<div class="tagList">
+	</div>
+	<div class="tagDescription">
+		系统会根据您的阅读记录<br/>自动调整您可能感兴趣的标签
+	</div>
+	<script>
+		(function() {
+			mui('.tagList').on('tap','.tagItem',function(e){
+				if(this.classList.contains('active')){
+					this.classList.remove('active');
+				}else{
+					this.classList.add('active');
+				}
+				// TODO 调接口
+			})
+			Kimkra.getLocalData('tagList.json', function(d) {
+				var tagList = document.getElementsByClassName("tagList")[0];
+				tagList.appendChild(Kimkra.tagView(d));
+			})
+		})()
+	</script>
+</div>
