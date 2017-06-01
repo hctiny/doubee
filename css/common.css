@@ -97,24 +97,22 @@ footer a {
 	padding-bottom: 2rem;
 }
 
+.favorite .mui-table-view,
 .content .mui-table-view,
-.rssDetail .mui-table-view{
+.rssDetail .mui-table-view {
 	background: none;
 }
 
-.rssDetail .content-imgView,
-.content .content-imgView {
+.content-imgView {
 	background: #FFF;
 	position: relative;
 }
 
-.rssDetail .content-imgView>.poster,
-.content .content-imgView>.poster {
+.content-imgView>.poster {
 	position: relative;
 }
 
-.rssDetail .content-imgView>.poster>.play,
-.content .content-imgView>.poster>.play {
+.content-imgView>.poster>.play {
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 100% 100%;
@@ -122,8 +120,7 @@ footer a {
 	display: block;
 }
 
-.rssDetail .content-imgView>.poster>.during,
-.content .content-imgView>.poster>.during {
+.content-imgView>.poster>.during {
 	position: absolute;
 	bottom: 1rem;
 	right: 1rem;
@@ -137,20 +134,17 @@ footer a {
 	margin: 0;
 }
 
-.rssDetail .content-imgView>.title,
-.content .content-imgView>.title {
+.content-imgView>.title {
 	padding: 0.5rem 1rem;
 	margin: 0;
 	font-weight: normal;
 }
 
-.rssDetail .content-imgView>.info-bar,
-.content .content-imgView>.info-bar {
+.content-imgView>.info-bar {
 	padding: 0rem 1rem 0.5rem 1rem;
 }
 
-.rssDetail .content-imgView>.info-bar>label,
-.content .content-imgView>.info-bar>label {
+.content-imgView>.info-bar>label {
 	margin-right: 1rem;
 }
 
@@ -199,9 +193,10 @@ iframe {
 	background: #f8f8f8;
 }
 
-.rss .mui-navigate-right>.flex{
+.rss .mui-navigate-right>.flex {
 	pointer-events: none;
 }
-.rssDetail .through-line>span{
+
+.rssDetail .through-line>span {
 	font-size: 1rem;
 }

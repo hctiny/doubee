@@ -1,9 +1,5 @@
-<div class="page page-current rssDetail">
+<div class="page page-current favorite">
 	<div class="mui-scroll-wrapper">
-		<header class="mui-text-center">
-			<h1 class="font-size14">巴拉巴拉巴拉</h1>
-			<p>啊混蛋撒谎的空间啥的凯撒很快</p>
-		</header>
 		<div class="mui-scroll-wrapper">
 			<div class="mui-scroll">
 				<ul class="mui-table-view"></ul>
@@ -12,8 +8,8 @@
 	</div>
 	<script>
 		(function() {
-			mui(".rssDetail .mui-scroll-wrapper").scroll();
-			mui(".rssDetail .mui-scroll").pullToRefresh({
+			mui(".favorite .mui-scroll-wrapper").scroll();
+			mui(".favorite .mui-scroll").pullToRefresh({
 				up: {
 					auto: true,
 					callback: function() {
