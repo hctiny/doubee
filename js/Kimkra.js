@@ -577,4 +577,15 @@ function($) {
 			}
 		});
 	};
+	
+	$.getLocalData = function(dataUrl, call){
+		mui.ajax({
+			type: "get",
+			url: "data/"+dataUrl,
+			async: false,
+			success: function(d) {
+				call(d);
+			}
+		});
+	}
 }(Kimkra)
