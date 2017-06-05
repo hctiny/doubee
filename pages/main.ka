@@ -17,7 +17,7 @@
 					</ul>
 					<ul class="mui-table-view mui-table-view-inverted" style="margin-top: 1rem;">
 						<li class="mui-table-view-cell">
-							<a class="mui-navigate-right">
+							<a class="mui-navigate-right" href="index.html?m=pages&a=favorite">
 								我的收藏
 							</a>
 						</li>
@@ -32,7 +32,7 @@
 							</a>
 						</li>
 						<li class="mui-table-view-cell">
-							<a class="mui-navigate-right">
+							<a class="mui-navigate-right" href="index.html?m=pages&a=settings">
 								设置
 							</a>
 						</li>
