@@ -167,7 +167,9 @@ iframe {
 	border: 0;
 	pointer-events: none;
 }
-
+.rss font{
+	padding: 0.2rem 0rem;
+}
 .rss .updateTime {
 	margin-left: 0.5rem;
 }
@@ -199,29 +201,26 @@ iframe {
 
 .rssDetail .through-line>span {
 	font-size: 1rem;
-<<<<<<< HEAD
-}
-=======
 }
 
-.myTag{
+.myTag {
 	background-color: #ddd;
 }
 
-.myTag .tagList{
+.myTag .tagList {
 	padding: 0;
 	margin: 2rem 0;
 }
 
-.myTag .tagRow{
+.myTag .tagRow {
 	display: -webkit-flex;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	justify-content:center;
+	justify-content: center;
 }
 
-.myTag .tagItem{
+.myTag .tagItem {
 	display: inline;
 	padding: 0.5rem 1.3rem 0.5rem 1.3rem;
 	margin: 0.5rem;
@@ -230,12 +229,12 @@ iframe {
 	line-height: 1.1rem;
 }
 
-.myTag .tagItem.active{
+.myTag .tagItem.active {
 	background-color: #ff7575;
 	color: #fff;
 }
 
-.myTag .tagDescription{
+.myTag .tagDescription {
 	text-align: center;
 	position: absolute;
 	bottom: 0.5rem;
@@ -243,4 +242,11 @@ iframe {
 	line-height: 1.2rem;
 	width: 100%;
 }
->>>>>>> origin/master
+.content-marker{
+	padding: 0.5rem;
+	text-align: center;
+	font-size: 1rem;
+	background: #fba6a6;
+	color: #FFF;
+	margin: 0.2rem 0rem;
+}

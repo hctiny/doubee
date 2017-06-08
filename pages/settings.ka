@@ -5,7 +5,7 @@
 				<ul class="mui-table-view">
 					<li class="mui-table-view-cell">
 						连续播放
-						<div class="mui-switch mui-switch-mini">
+						<div class="mui-switch mui-switch-mini" id="keeplay">
 							<div class="mui-switch-handle"></div>
 						</div>
 					</li>
@@ -13,7 +13,7 @@
 				<ul class="mui-table-view">
 					<li class="mui-table-view-cell">
 						自动播放
-						<div class="mui-switch mui-switch-mini">
+						<div class="mui-switch mui-switch-mini" id="autoPlay">
 							<div class="mui-switch-handle"></div>
 						</div>
 					</li>
@@ -28,9 +28,22 @@
 			switchs['switch']();
 			switchs.each(function() { //循环所有toggle
 				this.addEventListener('toggle', function(event) {
-					console.log(event.detail.isActive ? 'true' : 'false');
+					var open = event.detail.isActive ? 'yes' : 'no';
+					var name=this.id;
+					var opts={};
+					opts[name]=open
+					Kimkra.doAjax("member/memberSetting",opts,function(){
+						mui.toast("修改成功");
+						Kimkra.data.userInfo.member[name]=open;
+					})
 				});
 			});
+			if(Kimkra.data.userInfo.member.autoPlay==="yes"){
+				document.querySelector(".settings #autoPlay").classList.add("mui-active");
+			}
+			if(Kimkra.data.userInfo.member.keeplay==="yes"){
+				document.querySelector(".settings #keeplay").classList.add("mui-active");
+			}
 		})()
 	</script>
 </div>

@@ -116,6 +116,7 @@
 						if(e.target.className === "posterImg") {
 							//如果第首次播放
 							e.target.style.zIndex = 0;
+							iframe.style.display="initial";
 							played = true;
 							var point = e.detail.touches[0];
 							var p = iframe.contentDocument.querySelector(".x-video-button");
@@ -143,9 +144,11 @@
 
 					function autoPlay() {
 						//哔了狗了 一会儿能自动播放 一会儿不能
+						console.log(iframe);
 						var playButton = iframe.contentDocument.querySelector(".x-video-button");
 						console.log(playButton)
 						if(playButton) {
+							iframe.style.display="initial";
 							document.querySelector(".posterImg").style.zIndex = 0;
 							played = true;
 							playButton.dispatchEvent(new MouseEvent("click"));
@@ -162,7 +165,7 @@
 							discusswrapper.innerHTML = "";
 							discusswrapper.appendChild(parent.Kimkra.discussView());
 						}
-//						autoPlay.call(this);
+						autoPlay.call(this);
 					});
 
 					function hideVideo() {

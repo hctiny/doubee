@@ -6,17 +6,25 @@
 	</div>
 	<script>
 		(function() {
-			mui('.tagList').on('tap','.tagItem',function(e){
-				if(this.classList.contains('active')){
+			mui('.tagList').on('tap', '.tagItem', function(e) {
+				var like;
+				if(this.classList.contains('active')) {
 					this.classList.remove('active');
-				}else{
+					like = "cancel";
+				} else {
 					this.classList.add('active');
+					like = "like";
 				}
-				// TODO 调接口
+				Kimkra.doAjax("member/editVideoTag",{
+					likeStatus:like,
+					tagId:this.id
+				},function(d){
+					mui.toast("编辑成功")
+				})
 			})
-			Kimkra.getLocalData('tagList.json', function(d) {
+			Kimkra.doAjax("member/videoTags", {}, function(d) {
 				var tagList = document.getElementsByClassName("tagList")[0];
-				tagList.appendChild(Kimkra.tagView(d));
+				tagList.appendChild(Kimkra.tagView(d.tags));
 			})
 		})()
 	</script>
