@@ -8,6 +8,7 @@
 			var sliderGroup = document.querySelector(".videoViewer .mui-slider-group");
 
 			function bindEvent() {
+				//手势事件透传
 				function dispatchTouch(e) {
 					if(!Kimkra.dispatchTouch) {
 						return;
@@ -21,10 +22,6 @@
 					});
 					p && (p.dispatchEvent(_e));
 				}
-
-				function getVideoUrl(vid) {
-					return Kimkra.Util.root() + "index.html?m=pages&a=videoViewer&vid=" + vid;
-				}
 				sliderGroup.addEventListener("touchmove", function(e) {
 					dispatchTouch.call(this, e);
 				});
@@ -37,18 +34,26 @@
 				sliderGroup.addEventListener("touchcancel", function(e) {
 					dispatchTouch.call(this, e);
 				});
+
+				//
+				//function getVideoUrl(vid) {
+				//	return Kimkra.Util.root() + "index.html?m=pages&a=videoViewer&vid=" + vid;
+				//}
+				//播放完成自动下一页监听
 				window.addEventListener("next", function() {
 					autoslider.nextItem();
 				});
+				//评论返回事件处理
 				window.addEventListener("anchorBack", function(e) {
 					if(e.detail.hash === "control") {
 						document.querySelector(".mui-active iframe").contentWindow.dispatchEvent(new CustomEvent("hiddenControl"));
 					}
 				})
+				//滑动监听
 				document.querySelector(".videoViewer .mui-slider").addEventListener('slide', function(e) {
 					var prepage;
 					var currentPage = autoslider.pages[e.detail.slideNumber];
-					//					history.replaceState('', '', getVideoUrl(currentPage[0].element.getAttribute("vid")));
+					//history.replaceState('', '', getVideoUrl(currentPage[0].element.getAttribute("vid")));
 					autoslider.currentPage = currentPage[0];
 					autoslider.currentPage.element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("showVideo"));
 					var currentIndex = ~~(currentPage[0].element.id);
@@ -82,6 +87,7 @@
 				if(active) {
 					d.classList.add("mui-active");
 				}
+				console.log(index);
 				d.setAttribute("vid", Kimkra.data.videoInfo[index].id);
 				return d;
 			}
@@ -89,13 +95,24 @@
 			function bindData() {
 				var params = Kimkra.Util.getQueryString(location.href);
 				var currentId = params["vid"];
+				!Kimkra.data.videoInfo && (Kimkra.data.videoInfo = []);
+
 				var currentIndex = Kimkra.data.videoInfo.findIndex(function(v) {
 					return v.id == currentId;
 				})
-				var firstIndex;
-				if((currentIndex + 1) >= Kimkra.data.videoInfo.length) {
 
+				var firstIndex;
+				if(currentIndex < 0 || (currentIndex + 1) >= Kimkra.data.videoInfo.length) {
+					Kimkra.doAjax("videoList.json", {}, function(d) {
+						console.log(d)
+						Kimkra.data.videoInfo = Kimkra.data.videoInfo.add(d);
+						bindData();
+					}, {
+						async: false
+					})
+					return;
 				}
+				console.log(currentIndex);
 				if(currentIndex === 0) {
 					//第一页为当前页
 					firstIndex = makeViedoView(currentIndex, true);
@@ -109,11 +126,11 @@
 					sliderGroup.appendChild(firstIndex);
 					sliderGroup.appendChild(makeViedoView(currentIndex + 1));
 				}
-				firstIndex.querySelector("iframe").addEventListener("load", function() {
-					setTimeout(function() {
-						this.contentWindow.dispatchEvent(new CustomEvent("loadDiscuss"));
-					}.call(this), 500)
-				})
+//				firstIndex.querySelector("iframe").addEventListener("load", function() {
+//					setTimeout(function() {
+//						this.contentWindow.dispatchEvent(new CustomEvent("loadDiscuss"));
+//					}.call(this), 500)
+//				})
 			}
 			bindData();
 			setTimeout(bindEvent, 0);

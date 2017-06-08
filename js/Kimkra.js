@@ -154,6 +154,12 @@ function($) {
 		}
 		return !dir;
 	}
+	Array.prototype.add = function(a) {
+		return this.concat(a);
+	}
+	Array.prototype.empty = function() {
+		
+	}
 	if(!Array.prototype.findIndex) {
 		Object.defineProperty(Array.prototype, 'findIndex', {
 			value: function(predicate) {
@@ -473,6 +479,7 @@ function($) {
 		!settings && (getSettings());
 		$.showIndicator();
 		$.data = {};
+		$.doLogin();
 		$.router.load(location.href, {}, "new");
 		$.hideIndicator();
 		$.dispatchSlider = true;
@@ -558,17 +565,17 @@ function($) {
 			type: "get",
 			async: true
 		};
-		opt = mui.extend(opt, _opt, false);
+		opt = mui.extend(_opt, opt, false);
 		!opt && (opt = {})
 		$.showIndicator();
-		$.ajax({
+		mui.ajax({
 			type: opt.type,
 			url: settings.server + url,
 			data: data,
 			async: opt.async,
 			success: function(d) {
 				$.hideIndicator();
-				callback && callback();
+				callback && callback(d.data);
 			},
 			error: function(e) {
 				console.error(e);
@@ -577,15 +584,11 @@ function($) {
 			}
 		});
 	};
-	
-	$.getLocalData = function(dataUrl, call){
-		mui.ajax({
-			type: "get",
-			url: "data/"+dataUrl,
-			async: false,
-			success: function(d) {
-				call(d);
-			}
-		});
+	$.doLogin=function(){
+		$.doAjax("member/memberInfo",{},function(d){
+			$.data.userInfo=d;
+		},{
+			async:false
+		})
 	}
 }(Kimkra)

@@ -9,19 +9,39 @@
 	<script>
 		(function() {
 			mui(".favorite .mui-scroll-wrapper").scroll();
+			var ul = document.querySelector(".favorite .mui-table-view");
+			ul.setAttribute("page", "1");
 			mui(".favorite .mui-scroll").pullToRefresh({
 				up: {
 					auto: true,
 					callback: function() {
-						var self = this;
-						setTimeout(function() {
-							var ul = self.element.querySelector('.mui-table-view');
-							ul.appendChild(Kimkra.posterView());
-							self.endPullUpToRefresh();
-						}, 1000);
+						getList.call(this);
 					}
 				}
 			});
+
+			function getList() {
+				var self = this;
+				var page = ~~ul.getAttribute("page");
+				Kimkra.doAjax("video/videos", {
+					pageNum: page,
+					pageSize: 10,
+					type:"favourite"
+				}, function(d) {
+					console.log(d)
+					if(d.pageList.lastPage < page) {
+						self.endPullUpToRefresh(true);
+						return;
+					}
+					ul.appendChild(Kimkra.rssView(d.pageList.list))
+					var last = false;
+					if(d.pageList.lastPage == page) {
+						last = true;
+					}
+					self.endPullUpToRefresh(last);
+					ul.setAttribute("page", ++page);
+				})
+			}
 		})()
 	</script>
 </div>

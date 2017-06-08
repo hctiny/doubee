@@ -2,292 +2,44 @@
 	<div class="mui-scroll-wrapper">
 		<div class="mui-scroll">
 			<ul class="mui-table-view">
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right" href="index.html?m=pages&a=rssDetail">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
-				<li class="mui-table-view-cell">
-					<a class="mui-navigate-right">
-						<div class="flex">
-							<img class="rssHead" src="img/head.jpg" />
-							<div class="flex-align-self-center flex-grow">
-								<div class="flex">
-									<font class="font-size12">Shady</font>
-									<font class="updateTime">下午3:19</font>
-								</div>
-								<font class="warp2">dhkjsadjskahdksjahdkjhfhaksdhk</font>
-							</div>
-						</div>
-					</a>
-				</li>
+
 			</ul>
 		</div>
 	</div>
 	<script>
 		(function() {
 			mui(".rss .mui-scroll-wrapper").scroll();
+			var ul = document.querySelector(".rss .mui-table-view");
+			ul.setAttribute("page", "1");
+			mui(".rss .mui-scroll").pullToRefresh({
+				up: {
+					auto: true,
+					callback: function() {
+						getList.call(this);
+					}
+				}
+			});
+
+			function getList() {
+				var self=this;
+				var page = ~~ul.getAttribute("page");
+				Kimkra.doAjax("member/memberSubscriptions", {
+					pageNum: page,
+					pageSize: 10
+				}, function(d) {
+					if(d.pageList.lastPage < page) {
+						self.endPullUpToRefresh(true);
+						return;
+					}
+					ul.appendChild(Kimkra.rssList(d.pageList.list))
+					var last = false;
+					if(d.pageList.lastPage == page) {
+						last = true;
+					}
+					self.endPullUpToRefresh(last);
+					ul.setAttribute("page", ++page);
+				})
+			}
 		})()
 	</script>
 </div>

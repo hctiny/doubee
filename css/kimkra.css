@@ -179,7 +179,10 @@ body {
 .mui-table-view-noline>.mui-table-view-cell:after {
 	height: 0;
 }
-
+.font-size10 {
+	font-size: 1rem;
+	line-height: 1rem;
+}
 .font-size11 {
 	font-size: 1.1rem;
 	line-height: 1.1rem;
@@ -340,7 +343,7 @@ body {
 .discussWrapper>.discuss img.discussHead {
 	width: 2.5rem;
 	border-radius: 50%;
-	margin-right: 0.5rem;
+	margin-right: 1rem;
 }
 .rss img.rssHead{
 	width: 3.5rem;
