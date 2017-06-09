@@ -67,7 +67,7 @@
 					<h1 class="font-size13 warp2 title"></h1>
 					<div class="info-bar flex flex-spacebetween">
 						<font class="iconfont icon-yonghu"></font>
-						<button>+关注</button>
+						<button id="btnFollow">+关注</button>
 						<div class="flex-grow"></div>
 						<font class="iconfont icon-zan"></font>
 						<font class="iconfont icon-hongbao"></font>
@@ -101,7 +101,10 @@
 		<script>
 			(function() {
 				var params = parent.Kimkra.Util.getQueryString(location.href);
-				var videoInfo = parent.Kimkra.data.videoInfo[params.id];
+				var infoIndex = parent.Kimkra.data.videoInfo.findIndex(function(v){
+					return v.id == params.id;
+				});
+				var videoInfo = parent.Kimkra.data.videoInfo[infoIndex];
 				bindData();
 				bindEvent();
 				var iframe;
@@ -275,6 +278,27 @@
 					document.querySelector(".info-bar .icon-zan").addEventListener("tap", function(){
 						parent.Kimkra.operation("video", videoInfo.id, "like");
 					})
+					
+					document.getElementById("btnFollow").addEventListener("tap",function(e){
+						var operation = "add";
+						var bFollow = videoInfo.bSubscription;
+						if(bFollow){
+							operation = "cancel";
+						}
+						parent.Kimkra.doAjax("member/editMemberSubscription", {publisherId:videoInfo.memberId,operation:operation}, function(data){
+							if(bFollow){
+								videoInfo.bSubscription = false;
+								parent.mui.toast("已取消关注");
+								document.getElementById("btnFollow").innerHTML = "+关注";
+							}else{
+								videoInfo.bSubscription = true;
+								parent.mui.toast("已关注");
+								document.getElementById("btnFollow").innerHTML = "已关注";
+							}
+							parent.Kimkra.data.videoInfo[infoIndex] = videoInfo;
+							localStorage.setItem("videoList", JSON.stringify(parent.Kimkra.data.videoInfo[infoIndex]));
+						});
+					})
 				};
 
 				setTimeout(function() {
@@ -284,7 +308,7 @@
 					iframe.addEventListener("load", function() {
 						document.querySelector(".posterImg").style.zIndex = 999;
 						this.contentWindow.dispatchEvent(new CustomEvent("init", {
-							detail: parent.Kimkra.data.videoInfo[params.id]
+							detail: videoInfo
 						}))
 						if(playEnd) {
 							playEnd = false;
