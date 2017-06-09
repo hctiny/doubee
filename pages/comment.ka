@@ -1,0 +1,48 @@
+<div class="page page-current comment">
+	<div class="mui-scroll-wrapper">
+		<div class="mui-scroll">
+			<div class="discussWrapper">
+
+			</div>
+		</div>
+	</div>
+	<script>
+		(function($){
+			var params = Kimkra.Util.getQueryString(location.href); 
+			mui(".comment .mui-scroll-wrapper").scroll();
+			var listViewer = document.querySelector(".comment .discussWrapper");
+			listViewer.setAttribute("page", "1");
+			mui(".comment .mui-scroll").pullToRefresh({
+				up: {
+					auto: true,
+					callback: function() {
+						getList.call(this);
+					}
+				}
+			});
+
+			function getList() {
+				var self=this;
+				var page = ~~listViewer.getAttribute("page");
+				Kimkra.doAjax("video/videoComments", {
+					videoId: params["vid"],
+					type:"list",
+					pageNum: page,
+					pageSize: 10
+				}, function(d) {
+					if(d.pageList.lastPage < page) {
+						self.endPullUpToRefresh(true);
+						return;
+					}
+					listViewer.appendChild(Kimkra.discussView(d.pageList.list))
+					var last = false;
+					if(d.pageList.lastPage == page) {
+						last = true;
+					}
+					self.endPullUpToRefresh(last);
+					listViewer.setAttribute("page", ++page);
+				})
+			}
+		})(mui)
+	</script>
+</div>

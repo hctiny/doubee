@@ -35,9 +35,10 @@
 			var player;
 			window.addEventListener("init", function(e) {
 				player = new YKU.Player('youkuplayer', {
-					client_id: '9c756e0c6c46da69',
-					vid: 'XMjcyMjUzMTgxNg==',
+					client_id: e.detail.appId,
+					vid: e.detail.videoId,
 					newPlayer: true,
+					autoplay:true,
 					events: {
 						onPlayEnd: function() {
 							window.parent.dispatchEvent(new CustomEvent("playEnd"));

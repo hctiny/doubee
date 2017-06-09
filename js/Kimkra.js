@@ -591,4 +591,29 @@ function($) {
 			async:false
 		})
 	}
+	$.operation = function(type, id, operation, callback){
+		$.doAjax("video/operation",{id:id,type:type,operation:operation},function(data){
+			mui.toast('操作成功！');
+			location.reload();
+			callback && callback(data);
+		});
+	}
+	$.getVideoList = function(direction, videoId, resultCall){
+		Kimkra.doAjax("video/videos", {
+			pageSize: 10,
+			type: "list",
+			direction: "down",
+			start: 50
+		}, function(d) {
+			var historyList = localStorage.getItem("videoList");
+//			if(historyList){
+//				historyList = JSON.parse(historyList);
+//				historyList = historyList.add(d.pageList.list);
+//			}else{
+				historyList = d.pageList.list;
+//			}
+			localStorage.setItem("videoList", JSON.stringify(historyList));
+			resultCall();
+		},{async:false})
+	}
 }(Kimkra)

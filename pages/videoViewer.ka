@@ -8,6 +8,8 @@
 			var sliderGroup = document.querySelector(".videoViewer .mui-slider-group");
 
 			function bindEvent() {
+				var startX = 0;
+				var startY = 0;
 				//手势事件透传
 				function dispatchTouch(e) {
 					if(!Kimkra.dispatchTouch) {
@@ -27,9 +29,19 @@
 				});
 				sliderGroup.addEventListener("touchstart", function(e) {
 					dispatchTouch.call(this, e);
+					startX = e.touches[0].pageX;
+					startY = e.touches[0].pageY;
 				});
 				sliderGroup.addEventListener("touchend", function(e) {
 					dispatchTouch.call(this, e);
+					var offsetX = Math.abs(e.changedTouches[0].pageX - startX);
+					var offsetY = Math.abs(e.changedTouches[0].pageY - startY);
+					setTimeout(function(){
+						var iframeWindow = autoslider.currentPage.element.querySelector("iframe").contentWindow;
+						if(iframeWindow && offsetX > offsetY && offsetX > 35){
+							autoslider.currentPage.element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("autoPlay"))
+						}
+					},600);
 				});
 				sliderGroup.addEventListener("touchcancel", function(e) {
 					dispatchTouch.call(this, e);
@@ -56,22 +68,36 @@
 					//history.replaceState('', '', getVideoUrl(currentPage[0].element.getAttribute("vid")));
 					autoslider.currentPage = currentPage[0];
 					autoslider.currentPage.element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("showVideo"));
-					var currentIndex = ~~(currentPage[0].element.id);
-					var dataLength = Kimkra.data.videoInfo.length;
+					var currentVid = currentPage[0].element.getAttribute("vid");
+					var direction = e.detail.direction;
+					Kimkra.getVideoList(direction, currentVid, function(){
+						var videoListString = localStorage.getItem("videoList");
+						Kimkra.data.videoInfo = JSON.parse(videoListString);
+						
+						var currentIndex = Kimkra.data.videoInfo.findIndex(function(v) {
+							return v.id == currentVid;
+						})
+						var dataLength = Kimkra.data.videoInfo.length;
+						
+						if(direction === "left"){
+							if(currentIndex + 1 < dataLength){
+								autoslider.nextNode(makeViedoView(currentIndex + 1));
+							}
+						}else{
+							if(currentIndex - 1 >= 0){
+								autoslider.prevNode(makeViedoView(currentIndex - 1));
+							}
+						}
+					})
+					
 
 					if(e.detail.direction === "left") {
 						prepage = autoslider.pages[e.detail.slideNumber - 1];
-						if(currentIndex > 0 && (currentIndex + 1) < dataLength) {
-							autoslider.nextNode(makeViedoView(currentIndex + 1));
-						}
 					} else {
 						prepage = autoslider.pages[e.detail.slideNumber + 1];
-						if(currentIndex > 0 && (currentIndex + 2) < dataLength) {
-							autoslider.prevNode(makeViedoView(currentIndex - 1));
-						}
 					}
 
-					prepage && (prepage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("pause")));
+					//prepage && (prepage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("pause")));
 					currentPage && (currentPage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("loadDiscuss")))
 					//					currentPage && (currentPage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("play")))
 				});
@@ -92,48 +118,45 @@
 				return d;
 			}
 
-			function bindData() {
-				var params = Kimkra.Util.getQueryString(location.href);
-				var currentId = params["vid"];
-				!Kimkra.data.videoInfo && (Kimkra.data.videoInfo = []);
-
+			var params = Kimkra.Util.getQueryString(location.href);
+			var currentId = params["vid"];
+			
+			Kimkra.getVideoList("all", currentId, function(){
+				var videoListString = localStorage.getItem("videoList");
+				Kimkra.data.videoInfo = JSON.parse(videoListString);
+				initData();
+			})
+			
+			function initData() {
 				var currentIndex = Kimkra.data.videoInfo.findIndex(function(v) {
 					return v.id == currentId;
 				})
-
+				var dataLength = Kimkra.data.videoInfo.length;
 				var firstIndex;
-				if(currentIndex < 0 || (currentIndex + 1) >= Kimkra.data.videoInfo.length) {
-					Kimkra.doAjax("videoList.json", {}, function(d) {
-						console.log(d)
-						Kimkra.data.videoInfo = Kimkra.data.videoInfo.add(d);
-						bindData();
-					}, {
-						async: false
-					})
-					return;
-				}
 				console.log(currentIndex);
 				if(currentIndex === 0) {
 					//第一页为当前页
 					firstIndex = makeViedoView(currentIndex, true);
 					sliderGroup.appendChild(firstIndex);
-					sliderGroup.appendChild(makeViedoView(currentIndex + 1));
-					sliderGroup.appendChild(makeViedoView(currentIndex + 2));
+					for(var i = 1;i < 3 && currentIndex + i < dataLength;i++){
+						sliderGroup.appendChild(makeViedoView(currentIndex + i));
+					}
 				} else {
 					//正常加载
 					firstIndex = makeViedoView(currentIndex, true);
 					sliderGroup.appendChild(makeViedoView(currentIndex - 1));
 					sliderGroup.appendChild(firstIndex);
-					sliderGroup.appendChild(makeViedoView(currentIndex + 1));
+					if(currentIndex + 1 < dataLength){
+						sliderGroup.appendChild(makeViedoView(currentIndex + 1));
+					}
 				}
-//				firstIndex.querySelector("iframe").addEventListener("load", function() {
-//					setTimeout(function() {
-//						this.contentWindow.dispatchEvent(new CustomEvent("loadDiscuss"));
-//					}.call(this), 500)
-//				})
+				firstIndex.querySelector("iframe").addEventListener("load", function() {
+					setTimeout(function() {
+						this.contentWindow.dispatchEvent(new CustomEvent("loadDiscuss"));
+					}.call(this), 500)
+				})
 			}
-			bindData();
-			setTimeout(bindEvent, 0);
+			bindEvent();
 		})(mui);
 	</script>
 </div>

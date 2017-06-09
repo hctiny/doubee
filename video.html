@@ -43,6 +43,17 @@
 			.mui-scroll {
 				padding-bottom: 3.5rem;
 			}
+			.discuss-empty{
+				text-align: center;
+				color: #666;
+				font-size: 1.5rem;
+				line-height: 1.5rem;
+				padding: 1rem 0;				
+			}
+			.discuss-more{
+				text-align: center;
+				padding: 1rem 0;
+			}
 		</style>
 	</head>
 
@@ -90,17 +101,18 @@
 		<script>
 			(function() {
 				var params = parent.Kimkra.Util.getQueryString(location.href);
+				var videoInfo = parent.Kimkra.data.videoInfo[params.id];
 				bindData();
-				setTimeout(bindEvent, 0)
+				bindEvent();
 				var iframe;
 				var playEnd = false;
 				var played = false;
 
 				function bindData() {
-					document.querySelector(".posterImg").style.backgroundImage = "url(img/img.png)";
-					document.querySelector(".title").innerText = parent.Kimkra.data.videoInfo[params.id].title;
-					document.querySelector(".icon-yonghu").innerText = "这是汤不热";
-					document.querySelector(".info-bar .icon-zan").innerText = "15";
+					document.querySelector(".posterImg").style.backgroundImage = "url("+videoInfo.posterUrl+")";
+					document.querySelector(".title").innerText = videoInfo.title;
+					document.querySelector(".icon-yonghu").innerText = videoInfo.providerName;
+					document.querySelector(".info-bar .icon-zan").innerText = videoInfo.likeCount;
 					document.querySelector(".video-content").style.display = "initial"
 				};
 
@@ -139,6 +151,7 @@
 					window.addEventListener("pause", function(e) {
 						if(played && !playEnd) {
 							iframe.contentWindow.player.pauseVideo();
+							console.log('pause');
 						}
 					});
 
@@ -160,11 +173,33 @@
 					});
 					window.addEventListener("loadDiscuss", function() {
 						//doAjax 加载评论
-						var discusswrapper = document.querySelector(".discussWrapper");
-						if(discusswrapper.querySelector(".loader")) {
-							discusswrapper.innerHTML = "";
-							discusswrapper.appendChild(parent.Kimkra.discussView());
-						}
+						parent.Kimkra.doAjax("video/videoComments", {videoId:videoInfo.id,type:"latest"}, function(data){
+							var discusswrapper = document.querySelector(".discussWrapper");
+							if(!data || data.pageList.total == 0){
+								discusswrapper.innerHTML = "";
+								var empty = document.createElement("div");
+								empty.className = "discuss-empty";
+								empty.innerHTML = "抢占沙发~";
+								discusswrapper.appendChild(empty);
+								return;
+							}
+							if(discusswrapper.querySelector(".loader")) {
+								discusswrapper.innerHTML = "";
+								discusswrapper.appendChild(parent.Kimkra.discussView(data.pageList.list));
+								if(data.length > 5){
+									var more = document.createElement("div");
+									more.className = "discuss-empty";
+									more.innerHTML = "<a>全部评论</a>";
+									discusswrapper.appendChild(more);
+									more.addEventListener("tap", function(e){
+										parent.Kimkra.router.load("index.html?m=pages&a=comment&vid=" + videoInfo.id);
+									})
+								}
+							}
+						})
+					});
+					
+					window.addEventListener("autoPlay", function(){
 						autoPlay.call(this);
 					});
 
@@ -229,9 +264,17 @@
 					});
 
 					document.querySelector(".commitDiscuss").addEventListener("tap", function() {
-						parent.mui.toast("发表成功!");
-						document.querySelector("textarea").value = "";
+						var commentText = document.querySelector(".control.active textarea").value;
+						parent.Kimkra.doAjax("video/addVideoComment", {videoId:videoInfo.id,commentText:commentText}, function(data){
+							parent.mui.toast("发表成功!");
+							document.querySelector("textarea").value = "";
+							location.reload();
+						});
 					});
+					
+					document.querySelector(".info-bar .icon-zan").addEventListener("tap", function(){
+						parent.Kimkra.operation("video", videoInfo.id, "like");
+					})
 				};
 
 				setTimeout(function() {
