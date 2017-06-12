@@ -507,8 +507,8 @@ function($) {
 			$.data.videos = {
 				list: [],
 				temp: {
-					topid: null,
-					downid: null,
+					topid: 0,
+					downid: 0,
 					type: null,
 					direction: null,
 					pages: null,
@@ -518,51 +518,84 @@ function($) {
 		}
 	}
 
-	$.setVideos = function(direction, type, callback) {
-		var start = 0;
-		if(direction === "up") {
-			start = $.data.videos.temp.topid
-		} else {
-			start = $.data.videos.temp.downid
+	$.setVideos = function(type, callback, async) {
+		var ajaxParams = {
+			type: type
+		};
+		switch(type) {
+			case "list":
+				var direction = arguments[3];
+				var start = 0;
+				if(direction === "up") {
+					start = $.data.videos.temp.topid
+				} else {
+					start = $.data.videos.temp.downid
+				}
+				ajaxParams["pageSize"] = 10;
+				ajaxParams["direction"] = direction;
+				ajaxParams["start"] = start;
+				break;
+			case "goodluck":
+				break;
+			case "upload":
+				var pageNum = arguments[3];
+				var memberId = arguments[4];
+				ajaxParams["pageSize"] = 10;
+				ajaxParams["pageNum"] = pageNum;
+				ajaxParams["memberId"] = memberId;
+				break;
+			case "favourite":
+				var pageNum = arguments[3];
+				ajaxParams["pageSize"] = 10;
+				ajaxParams["pageNum"] = pageNum;
+				break;
 		}
-		$.doAjax("video/videos", {
-			pageSize: 10,
-			type: type,
-			direction: direction,
-			start: start
-		}, function(d) {
+		$.doAjax("video/videos", ajaxParams, function(d) {
+			d.pageList.list = d.pageList.list.sort(function(a,b){
+				return b.id - a.id;
+			})
+			$.tempVideo(type, d);
+			callback && callback(d);
+		}, {async: async})
+	}
+	$.tempVideo = function(type, d) {
+		if(!$.data.videos) {
+			initVideo();
+		}
+		if(type !== $.data.videos.temp.type) {
+			$.data.videos.list = [];
+		}
+		$.data.videos.temp.type = type;
+		if(type == "list") {
+			var direction = arguments[2];
 			if(direction === "down") {
 				$.data.videos.list = $.data.videos.list.add(d.pageList.list);
 			} else {
 				$.data.videos.list = d.pageList.list.add($.data.videos.list);
 			}
-			$.data.videos.temp.type = type;
 			$.data.videos.temp.direction = direction;
-			$.data.videos.temp.downid = $.data.videos.list[$.data.videos.list.length - 1].id;
-			$.data.videos.temp.topid = $.data.videos.list[0].id;
-			localStorage.setItem("video", JSON.stringify($.data.videos));
-			callback && callback(d);
-		})
-	}
-	$.tempVideo = function(d, opts) {
-		if(opts.type !== tempVideos.temp.type) {
-			tempVideos.list = [];
-		}
-		if(opts.direction === "down") {
-			tempVideos.list = tempVideos.list.add(d);
 		} else {
-			tempVideos.list = d.add(tempVideos.list);
+			$.data.videos.list = $.data.videos.list.add(d.pageList.list);
 		}
-		mui.extend(tempVideos.temp, opts, true);
-		tempVideos.temp.downid = tempVideos.list[tempVideos.list.length - 1].id;
-		tempVideos.temp.topid = tempVideos.list[0].id;
-		this.getId = function(direction) {
-			if(direction === "down") {
-				return tempVideos.temp.downid;
-			} else {
-				return tempVideos.temp.upid;
-			}
+		switch(type) {
+			case "list":
+				$.data.videos.temp.downid = $.data.videos.list[$.data.videos.list.length - 1].id;
+				$.data.videos.temp.topid = $.data.videos.list[0].id;
+				break;
+			case "goodluck":
+				break;
+			case "upload":
+				var pageNum = arguments[2];
+				var memberId = arguments[3];
+				$.data.videos.temp.pages = pageNum;
+				$.data.videos.temp.memberId = memberId;
+				break;
+			case "favourite":
+				var pageNum = arguments[2];
+				$.data.videos.temp.pages = pageNum;
+				break;
 		}
+		localStorage.setItem("video", JSON.stringify($.data.videos));
 	}
 
 	function isInRouterBlackList($link) {
@@ -670,29 +703,47 @@ function($) {
 			async: false
 		})
 	}
-	$.operation = function(type, id, operation, callback){
-		$.doAjax("video/operation",{id:id,type:type,operation:operation},function(data){
+	$.operation = function(type, id, operation, callback) {
+		$.doAjax("video/operation", {
+			id: id,
+			type: type,
+			operation: operation
+		}, function(data) {
 			mui.toast('操作成功！');
 			location.reload();
 			callback && callback(data);
 		});
 	}
-	$.getVideoList = function(direction, videoId, resultCall){
-		Kimkra.doAjax("video/videos", {
-			pageSize: 10,
-			type: "list",
-			direction: "down",
-			start: 50
-		}, function(d) {
-			var historyList = localStorage.getItem("videoList");
-//			if(historyList){
-//				historyList = JSON.parse(historyList);
-//				historyList = historyList.add(d.pageList.list);
-//			}else{
-				historyList = d.pageList.list;
-//			}
-			localStorage.setItem("videoList", JSON.stringify(historyList));
-			resultCall();
-		},{async:false})
+	$.getVideoList = function(direction, videoId, resultCall) {
+		localStorage.setItem('playVideoId', videoId);
+		if(!$.data.videos) {
+			initVideo();
+		}
+		var videoIndex = $.data.videos.list.findIndex(function(v){
+			return v.id == videoId;
+		});
+		if($.data.videos.temp.type === "list"){
+			if(direction === "left" && videoIndex > $.data.videos.list.length - 3){
+				$.setVideos($.data.videos.temp.type, null,true, "down");
+			}else if(direction == "right" && videoIndex < 2){
+				$.setVideos($.data.videos.temp.type, null,true, "up");
+			}else if(direction == "all"){
+				if(videoIndex < 2){
+					$.setVideos($.data.videos.temp.type, function(d){
+						resultCall($.data.videos.list);
+					},false, "up");
+				}else if(videoIndex > $.data.videos.list.length - 3){
+					$.setVideos($.data.videos.temp.type, function(d){
+						resultCall($.data.videos.list);
+					},false, "down");
+				}
+				return;
+			}
+		}else{
+			if(videoIndex > $.data.videos.list.length - 3){
+				$.setVideos($.data.videos.temp.type, null,true, $.data.videos.temp.pages, $.data.videos.temp.memberId);
+			}
+		}
+		resultCall($.data.videos.list);
 	}
 }(Kimkra)

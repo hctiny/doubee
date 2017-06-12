@@ -116,7 +116,8 @@
 					document.querySelector(".title").innerText = videoInfo.title;
 					document.querySelector(".icon-yonghu").innerText = videoInfo.providerName;
 					document.querySelector(".info-bar .icon-zan").innerText = videoInfo.likeCount;
-					document.querySelector(".video-content").style.display = "initial"
+					document.querySelector(".video-content").style.display = "initial";
+					document.getElementById("btnFollow").innerHTML = videoInfo.bSubscribed ? "已关注":"+关注";
 				};
 
 				function bindEvent() {
@@ -281,28 +282,29 @@
 					
 					document.getElementById("btnFollow").addEventListener("tap",function(e){
 						var operation = "add";
-						var bFollow = videoInfo.bSubscription;
+						var bFollow = videoInfo.bSubscribed;
 						if(bFollow){
 							operation = "cancel";
 						}
 						parent.Kimkra.doAjax("member/editMemberSubscription", {publisherId:videoInfo.memberId,operation:operation}, function(data){
 							if(bFollow){
-								videoInfo.bSubscription = false;
+								videoInfo.bSubscribed = false;
 								parent.mui.toast("已取消关注");
 								document.getElementById("btnFollow").innerHTML = "+关注";
 							}else{
-								videoInfo.bSubscription = true;
+								videoInfo.bSubscribed = true;
 								parent.mui.toast("已关注");
 								document.getElementById("btnFollow").innerHTML = "已关注";
 							}
 							parent.Kimkra.data.videoInfo[infoIndex] = videoInfo;
-							localStorage.setItem("videoList", JSON.stringify(parent.Kimkra.data.videoInfo[infoIndex]));
+							localStorage.setItem("video", JSON.stringify(parent.Kimkra.data.videoInfo));
 						});
 					})
 				};
 
 				setTimeout(function() {
 					iframe = document.createElement("iframe");
+					console.log(iframe);
 					iframe.src = "youku.html";
 					document.querySelector(".poster").appendChild(iframe);
 					iframe.addEventListener("load", function() {

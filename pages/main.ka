@@ -27,7 +27,7 @@
 							</a>
 						</li>
 						<li class="mui-table-view-cell">
-							<a class="mui-navigate-right">
+							<a class="mui-navigate-right" href="index.html?m=pages&a=videoViewer&goodluck=true">
 								手气不错
 							</a>
 						</li>
@@ -62,7 +62,7 @@
 						<a class="font-white iconfont icon-icon01" href="index.html?m=pages&a=rss">
 							订阅
 						</a>
-						<a class="font-white iconfont icon-ttpodicon1 flex-grow" href="index.html?m=pages&a=videoViewer&vid=id1">
+						<a class="font-white iconfont icon-ttpodicon1 flex-grow">
 							继续观看
 						</a>
 						<a class="font-white iconfont icon-gengduo1" href="#offCanvasSide"></a>
@@ -78,22 +78,32 @@
 			mui(".main .mui-scroll-wrapper").scroll();
 			mui('.main .mui-off-canvas-wrap').offCanvas();
 			var ul = document.querySelector(".main .content .mui-table-view");
+			document.querySelector('.icon-ttpodicon1').addEventListener("tap", function(){
+				var videoId = localStorage.getItem("playVideoId");
+				if(videoId){
+					Kimkra.router.load("index.html?m=pages&a=videoViewer&vid=" + videoId);
+				}else{
+					mui.toast("您没有播放任何视频");
+				}
+			});
 			mui(".main .mui-scroll.content").pullToRefresh({
 				down: {
 					callback: function() {
 						var self = this;
-						setTimeout(function() {
-							var ul = self.element.querySelector('.mui-table-view');
-							ul.innerHTML = "";
-							ul.appendChild(Kimkra.posterView());
+						Kimkra.setVideos("list",function(data){
+							ul.insertBefore(Kimkra.posterView(data.pageList.list), ul.children[0]);
 							self.endPullDownToRefresh();
-						}, 1000);
+						},true,"up");
 					}
 				},
 				up: {
 					auto: true,
 					callback: function() {
-						bindData.call(this, "down")
+						var self = this;
+						Kimkra.setVideos("list",function(data){
+							ul.appendChild(Kimkra.posterView(data.pageList.list));
+							self.endPullUpToRefresh();
+						},true,"down");
 					}
 				}
 			});
@@ -103,21 +113,21 @@
 				document.querySelector(".main .userName").innerText = Kimkra.data.userInfo.member.name;
 			}
 
-			function bindData(direction) {
-				var self = this;
-				Kimkra.doAjax("video/videos", {
-					pageSize: 10,
-					type: "list",
-					direction: direction
-				}, function(d) {
-					$.tempVideo(d.pageList.list,{
-						type:"list",
-						direction:direction
-					});
-					ul.appendChild(Kimkra.posterView(d.pageList.list));
-					self.endPullUpToRefresh();
-				})
-			}
+			//function bindData(direction) {
+			//	var self = this;
+			//	Kimkra.doAjax("video/videos", {
+			//		pageSize: 10,
+			//		type: "list",
+			//		direction: direction
+			//	}, function(d) {
+			//		$.tempVideo(d.pageList.list,{
+			//			type:"list",
+			//			direction:direction
+			//		});
+			//		ul.appendChild(Kimkra.posterView(d.pageList.list));
+			//		self.endPullUpToRefresh();
+			//	})
+			//}
 			bindUser();
 		})()
 	</script>
