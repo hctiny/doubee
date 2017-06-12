@@ -66,13 +66,11 @@
 					var prepage;
 					var currentPage = autoslider.pages[e.detail.slideNumber];
 					//history.replaceState('', '', getVideoUrl(currentPage[0].element.getAttribute("vid")));
-					autoslider.currentPage = currentPage[0];
-					autoslider.currentPage.element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("showVideo"));
 					var currentVid = currentPage[0].element.getAttribute("vid");
 					var direction = e.detail.direction;
-					Kimkra.getVideoList(direction, currentVid, function(){
-						var videoListString = localStorage.getItem("videoList");
-						Kimkra.data.videoInfo = JSON.parse(videoListString);
+					Kimkra.getVideoList(direction, currentVid, function(data){
+						console.log(autoslider.currentPage);
+						Kimkra.data.videoInfo = data;
 						
 						var currentIndex = Kimkra.data.videoInfo.findIndex(function(v) {
 							return v.id == currentVid;
@@ -96,7 +94,8 @@
 					} else {
 						prepage = autoslider.pages[e.detail.slideNumber + 1];
 					}
-
+					autoslider.currentPage = currentPage[0];
+					autoslider.currentPage.element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("showVideo"));
 					//prepage && (prepage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("pause")));
 					currentPage && (currentPage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("loadDiscuss")))
 					//					currentPage && (currentPage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("play")))
@@ -120,12 +119,25 @@
 
 			var params = Kimkra.Util.getQueryString(location.href);
 			var currentId = params["vid"];
-			
-			Kimkra.getVideoList("all", currentId, function(){
-				var videoListString = localStorage.getItem("videoList");
-				Kimkra.data.videoInfo = JSON.parse(videoListString);
-				initData();
-			})
+			var isGoodLuck = params["goodluck"];
+			if(isGoodLuck){
+				Kimkra.setVideos("goodluck", function(d){
+					if(d.pageList.list.length > 0){
+						currentId = d.pageList.list[0].id;
+						Kimkra.data.videoInfo = d.pageList.list;
+						initData();
+						bindEvent();
+					}else{
+						Kimkra.router.back();
+					}
+				}, true);
+			}else{
+				Kimkra.getVideoList("all", currentId, function(data){
+					Kimkra.data.videoInfo = data;
+					initData();
+				})
+				bindEvent();
+			}
 			
 			function initData() {
 				var currentIndex = Kimkra.data.videoInfo.findIndex(function(v) {
@@ -156,7 +168,6 @@
 					}.call(this), 500)
 				})
 			}
-			bindEvent();
 		})(mui);
 	</script>
 </div>

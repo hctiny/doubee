@@ -15,7 +15,21 @@
 				up: {
 					auto: true,
 					callback: function() {
-						getList.call(this);
+						var self = this;
+						var page = ~~ul.getAttribute("page");
+						Kimkra.setVideos("favourite",function(d){
+							if(d.pageList.lastPage < page) {
+								self.endPullUpToRefresh(true);
+								return;
+							}
+							ul.appendChild(Kimkra.rssView(d.pageList.list))
+							var last = false;
+							if(d.pageList.lastPage == page) {
+								last = true;
+							}
+							self.endPullUpToRefresh(last);
+							ul.setAttribute("page", ++page);
+						},true,page);
 					}
 				}
 			});
