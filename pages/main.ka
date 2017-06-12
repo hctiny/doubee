@@ -93,7 +93,7 @@
 				up: {
 					auto: true,
 					callback: function() {
-						bindData.call(this, 50, "down")
+						bindData.call(this, "down")
 					}
 				}
 			});
@@ -103,15 +103,17 @@
 				document.querySelector(".main .userName").innerText = Kimkra.data.userInfo.member.name;
 			}
 
-			function bindData(start, direction) {
+			function bindData(direction) {
 				var self = this;
 				Kimkra.doAjax("video/videos", {
 					pageSize: 10,
 					type: "list",
-					direction: "down",
-					start: start
+					direction: direction
 				}, function(d) {
-					console.log(d)
+					$.tempVideo(d.pageList.list,{
+						type:"list",
+						direction:direction
+					});
 					ul.appendChild(Kimkra.posterView(d.pageList.list));
 					self.endPullUpToRefresh();
 				})
