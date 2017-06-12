@@ -158,7 +158,7 @@ function($) {
 		return this.concat(a);
 	}
 	Array.prototype.empty = function() {
-		
+
 	}
 	if(!Array.prototype.findIndex) {
 		Object.defineProperty(Array.prototype, 'findIndex', {
@@ -475,6 +475,18 @@ function($) {
 }(Kimkra); +
 function($) {
 	var settings;
+	var tempVideos = {
+		list: [],
+		temp: {
+			topid: null,
+			downid: null,
+			type: null,
+			direction: null,
+			pages: null,
+			memberId: null
+		}
+	};
+	Kimkra.aaa = tempVideos;
 	$.init = function() {
 		!settings && (getSettings());
 		$.showIndicator();
@@ -484,6 +496,73 @@ function($) {
 		$.hideIndicator();
 		$.dispatchSlider = true;
 		$.dispatchTouch = true;
+		initVideo();
+	}
+
+	function initVideo() {
+		var videos = JSON.parse(localStorage.getItem("video"));
+		if(videos) {
+			$.data.videos = videos
+		} else {
+			$.data.videos = {
+				list: [],
+				temp: {
+					topid: null,
+					downid: null,
+					type: null,
+					direction: null,
+					pages: null,
+					memberId: null
+				}
+			}
+		}
+	}
+
+	$.setVideos = function(direction, type, callback) {
+		var start = 0;
+		if(direction === "up") {
+			start = $.data.videos.temp.topid
+		} else {
+			start = $.data.videos.temp.downid
+		}
+		$.doAjax("video/videos", {
+			pageSize: 10,
+			type: type,
+			direction: direction,
+			start: start
+		}, function(d) {
+			if(direction === "down") {
+				$.data.videos.list = $.data.videos.list.add(d.pageList.list);
+			} else {
+				$.data.videos.list = d.pageList.list.add($.data.videos.list);
+			}
+			$.data.videos.temp.type = type;
+			$.data.videos.temp.direction = direction;
+			$.data.videos.temp.downid = $.data.videos.list[$.data.videos.list.length - 1].id;
+			$.data.videos.temp.topid = $.data.videos.list[0].id;
+			localStorage.setItem("video", JSON.stringify($.data.videos));
+			callback && callback(d);
+		})
+	}
+	$.tempVideo = function(d, opts) {
+		if(opts.type !== tempVideos.temp.type) {
+			tempVideos.list = [];
+		}
+		if(opts.direction === "down") {
+			tempVideos.list = tempVideos.list.add(d);
+		} else {
+			tempVideos.list = d.add(tempVideos.list);
+		}
+		mui.extend(tempVideos.temp, opts, true);
+		tempVideos.temp.downid = tempVideos.list[tempVideos.list.length - 1].id;
+		tempVideos.temp.topid = tempVideos.list[0].id;
+		this.getId = function(direction) {
+			if(direction === "down") {
+				return tempVideos.temp.downid;
+			} else {
+				return tempVideos.temp.upid;
+			}
+		}
 	}
 
 	function isInRouterBlackList($link) {
@@ -584,11 +663,11 @@ function($) {
 			}
 		});
 	};
-	$.doLogin=function(){
-		$.doAjax("member/memberInfo",{},function(d){
-			$.data.userInfo=d;
-		},{
-			async:false
+	$.doLogin = function() {
+		$.doAjax("member/memberInfo", {}, function(d) {
+			$.data.userInfo = d;
+		}, {
+			async: false
 		})
 	}
 	$.operation = function(type, id, operation, callback){
