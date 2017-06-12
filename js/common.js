@@ -77,7 +77,7 @@
 			});
 			var dis_head = _createElement("img", {
 				class: "discussHead",
-				src: "img/head.jpg"
+				src: data.commentMemberHeadPortrait
 			});
 			var dis_content = _createElement("div", {
 				class: "flex-align-self-center flex-grow"
@@ -87,14 +87,17 @@
 			});
 			dis_control.appendChild(_createElement("font", {
 				class: "font-size11",
-				innerText: "Shady"
+				innerText: data.commentMemberName
 			}));
 			dis_control.appendChild(_createElement("font", {
 				class: "flex-grow"
 			}));
 			dis_control.appendChild(_createElement("font", {
 				class: "iconfont icon-zan",
-				innerText: "3"
+				innerText: data.likeCount,
+				tap:function(){
+					parent.Kimkra.operation("comment", data.id, "like");
+				}
 			}));
 			dis_control.appendChild(_createElement("font", {
 				class: "iconfont icon-ttpodicon"
@@ -102,15 +105,15 @@
 			dis_content.appendChild(dis_control);
 			dis_content.appendChild(_createElement("font", {
 				class: "warp2",
-				innerText: "dhkjsadjskahdksjahdkjhfhaksdhk"
+				innerText: data.commentText
 			}))
 			discuss.appendChild(dis_head);
 			discuss.appendChild(dis_content);
 			return discuss;
 		}
 		var t = document.createDocumentFragment();
-		for(var i = 0; i < 10; i++) {
-			t.appendChild(makeDom())
+		for(var i = 0; i < data.length; i++) {
+			t.appendChild(makeDom(data[i]));
 		}
 		return t;
 	}
@@ -144,7 +147,7 @@
 		});
 		p.appendChild(_createElement("label", {
 			class: "from font-size10",
-			innerText: "汤不热"
+			innerText: data.providerName
 		}));
 		p.appendChild(_createElement("label", {
 			class: "view font-red font-size10",
@@ -225,11 +228,13 @@
 
 		},
 		prevNode: function(node) {
-			this.scroller.insertBefore(node, this.pages[0][0].element);
-			this.scroller.children[this.scroller.children.length - 1].remove();
-			this.refresh();
-			this.slideNumber -= 1;
-			this.setTranslate(this._getPage(this.slideNumber).x, 0);
+			if(this.slideNumber === 0) {
+				this.scroller.insertBefore(node, this.pages[0][0].element);
+				this.scroller.children[this.scroller.children.length - 1].remove();
+				this.refresh();
+				this.slideNumber -= 1;
+				this.setTranslate(this._getPage(this.slideNumber).x, 0);
+			}
 		},
 		_triggerSlide: function(e) {
 			Kimkra.dispatchTouch = true;
