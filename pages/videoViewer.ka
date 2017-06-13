@@ -36,12 +36,12 @@
 					dispatchTouch.call(this, e);
 					var offsetX = Math.abs(e.changedTouches[0].pageX - startX);
 					var offsetY = Math.abs(e.changedTouches[0].pageY - startY);
-					setTimeout(function(){
+					setTimeout(function() {
 						var iframeWindow = autoslider.currentPage.element.querySelector("iframe").contentWindow;
-						if(iframeWindow && offsetX > offsetY && offsetX > 35){
+						if(iframeWindow && offsetX > offsetY && offsetX > 35) {
 							autoslider.currentPage.element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("autoPlay"))
 						}
-					},600);
+					}, 600);
 				});
 				sliderGroup.addEventListener("touchcancel", function(e) {
 					dispatchTouch.call(this, e);
@@ -68,26 +68,23 @@
 					//history.replaceState('', '', getVideoUrl(currentPage[0].element.getAttribute("vid")));
 					var currentVid = currentPage[0].element.getAttribute("vid");
 					var direction = e.detail.direction;
-					Kimkra.getVideoList(direction, currentVid, function(data){
-						console.log(autoslider.currentPage);
+					Kimkra.getVideoList(direction, currentVid, function(data) {
 						Kimkra.data.videoInfo = data;
-						
 						var currentIndex = Kimkra.data.videoInfo.findIndex(function(v) {
 							return v.id == currentVid;
 						})
 						var dataLength = Kimkra.data.videoInfo.length;
-						
-						if(direction === "left"){
-							if(currentIndex + 1 < dataLength){
+
+						if(direction === "left") {
+							if(currentIndex + 1 < dataLength) {
 								autoslider.nextNode(makeViedoView(currentIndex + 1));
 							}
-						}else{
-							if(currentIndex - 1 >= 0){
+						} else {
+							if(currentIndex - 1 >= 0) {
 								autoslider.prevNode(makeViedoView(currentIndex - 1));
 							}
 						}
 					})
-					
 
 					if(e.detail.direction === "left") {
 						prepage = autoslider.pages[e.detail.slideNumber - 1];
@@ -96,7 +93,8 @@
 					}
 					autoslider.currentPage = currentPage[0];
 					autoslider.currentPage.element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("showVideo"));
-					//prepage && (prepage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("pause")));
+					prepage && (prepage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("pause")));
+					console.log(prepage);
 					currentPage && (currentPage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("loadDiscuss")))
 					//					currentPage && (currentPage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("play")))
 				});
@@ -112,7 +110,6 @@
 				if(active) {
 					d.classList.add("mui-active");
 				}
-				console.log(index);
 				d.setAttribute("vid", Kimkra.data.videoInfo[index].id);
 				return d;
 			}
@@ -120,37 +117,36 @@
 			var params = Kimkra.Util.getQueryString(location.href);
 			var currentId = params["vid"];
 			var isGoodLuck = params["goodluck"];
-			if(isGoodLuck){
-				Kimkra.setVideos("goodluck", function(d){
-					if(d.pageList.list.length > 0){
+			if(isGoodLuck) {
+				Kimkra.setVideos("goodluck", function(d) {
+					if(d.pageList.list.length > 0) {
 						currentId = d.pageList.list[0].id;
 						Kimkra.data.videoInfo = d.pageList.list;
 						initData();
 						bindEvent();
-					}else{
+					} else {
 						Kimkra.router.back();
 					}
 				}, true);
-			}else{
-				Kimkra.getVideoList("all", currentId, function(data){
+			} else {
+				Kimkra.getVideoList("all", currentId, function(data) {
 					Kimkra.data.videoInfo = data;
 					initData();
 				})
 				bindEvent();
 			}
-			
+
 			function initData() {
 				var currentIndex = Kimkra.data.videoInfo.findIndex(function(v) {
 					return v.id == currentId;
 				})
 				var dataLength = Kimkra.data.videoInfo.length;
 				var firstIndex;
-				console.log(currentIndex);
 				if(currentIndex === 0) {
 					//第一页为当前页
 					firstIndex = makeViedoView(currentIndex, true);
 					sliderGroup.appendChild(firstIndex);
-					for(var i = 1;i < 3 && currentIndex + i < dataLength;i++){
+					for(var i = 1; i < 3 && currentIndex + i < dataLength; i++) {
 						sliderGroup.appendChild(makeViedoView(currentIndex + i));
 					}
 				} else {
@@ -158,7 +154,7 @@
 					firstIndex = makeViedoView(currentIndex, true);
 					sliderGroup.appendChild(makeViedoView(currentIndex - 1));
 					sliderGroup.appendChild(firstIndex);
-					if(currentIndex + 1 < dataLength){
+					if(currentIndex + 1 < dataLength) {
 						sliderGroup.appendChild(makeViedoView(currentIndex + 1));
 					}
 				}
