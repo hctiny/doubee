@@ -522,9 +522,11 @@ function($) {
 		var ajaxParams = {
 			type: type
 		};
+		var argFirst = arguments[3];
+		var argSecond = arguments[4];
 		switch(type) {
 			case "list":
-				var direction = arguments[3];
+				var direction = argFirst;
 				var start = 0;
 				if(direction === "up") {
 					start = $.data.videos.temp.topid
@@ -538,14 +540,14 @@ function($) {
 			case "goodluck":
 				break;
 			case "upload":
-				var pageNum = arguments[3];
-				var memberId = arguments[4];
+				var pageNum = argFirst;
+				var memberId = argSecond;
 				ajaxParams["pageSize"] = 10;
 				ajaxParams["pageNum"] = pageNum;
 				ajaxParams["memberId"] = memberId;
 				break;
 			case "favourite":
-				var pageNum = arguments[3];
+				var pageNum = argFirst;
 				ajaxParams["pageSize"] = 10;
 				ajaxParams["pageNum"] = pageNum;
 				break;
@@ -554,7 +556,7 @@ function($) {
 			d.pageList.list = d.pageList.list.sort(function(a,b){
 				return b.id - a.id;
 			})
-			$.tempVideo(type, d);
+			$.tempVideo(type, d, argFirst, argSecond);
 			callback && callback(d);
 		}, {async: async})
 	}
@@ -704,13 +706,11 @@ function($) {
 		})
 	}
 	$.operation = function(type, id, operation, callback) {
-		$.doAjax("video/operation", {
-			id: id,
+		$.doAjax("video/operation/"+id, {
 			type: type,
 			operation: operation
 		}, function(data) {
 			mui.toast('操作成功！');
-			location.reload();
 			callback && callback(data);
 		});
 	}
@@ -736,6 +736,8 @@ function($) {
 					$.setVideos($.data.videos.temp.type, function(d){
 						resultCall($.data.videos.list);
 					},false, "down");
+				}else{
+					resultCall($.data.videos.list);
 				}
 				return;
 			}

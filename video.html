@@ -277,7 +277,11 @@
 					});
 					
 					document.querySelector(".info-bar .icon-zan").addEventListener("tap", function(){
-						parent.Kimkra.operation("video", videoInfo.id, "like");
+						var self = this;
+						var curCount = parseInt(self.innerHTML);
+						parent.Kimkra.operation("video", videoInfo.id, "like", function(data){
+							self.innerHTML = curCount + 1;
+						});
 					})
 					
 					document.getElementById("btnFollow").addEventListener("tap",function(e){
@@ -298,6 +302,7 @@
 							}
 							parent.Kimkra.data.videoInfo[infoIndex] = videoInfo;
 							localStorage.setItem("video", JSON.stringify(parent.Kimkra.data.videoInfo));
+							parent.Kimkra.data.videos.list = parent.Kimkra.data.videoInfo;
 						});
 					})
 				};
