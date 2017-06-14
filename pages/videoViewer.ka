@@ -65,6 +65,11 @@
 				document.querySelector(".videoViewer .mui-slider").addEventListener('slide', function(e) {
 					var prepage;
 					var currentPage = autoslider.pages[e.detail.slideNumber];
+					if(e.detail.direction === "left") {
+						prepage = autoslider.pages[e.detail.slideNumber - 1];
+					} else {
+						prepage = autoslider.pages[e.detail.slideNumber + 1];
+					}
 					//history.replaceState('', '', getVideoUrl(currentPage[0].element.getAttribute("vid")));
 					var currentVid = currentPage[0].element.getAttribute("vid");
 					var direction = e.detail.direction;
@@ -85,16 +90,10 @@
 							}
 						}
 					})
-
-					if(e.detail.direction === "left") {
-						prepage = autoslider.pages[e.detail.slideNumber - 1];
-					} else {
-						prepage = autoslider.pages[e.detail.slideNumber + 1];
-					}
+					console.log(prepage[0]);
 					autoslider.currentPage = currentPage[0];
 					autoslider.currentPage.element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("showVideo"));
 					prepage && (prepage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("pause")));
-					console.log(prepage);
 					currentPage && (currentPage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("loadDiscuss")))
 					//					currentPage && (currentPage[0].element.querySelector("iframe").contentWindow.dispatchEvent(new CustomEvent("play")))
 				});

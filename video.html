@@ -116,6 +116,9 @@
 					document.querySelector(".title").innerText = videoInfo.title;
 					document.querySelector(".icon-yonghu").innerText = videoInfo.providerName;
 					document.querySelector(".info-bar .icon-zan").innerText = videoInfo.likeCount;
+					if(videoInfo.bLike){
+						document.querySelector(".info-bar .icon-zan").classList.add("font-red");
+					}
 					document.querySelector(".video-content").style.display = "initial";
 					document.getElementById("btnFollow").innerHTML = videoInfo.bSubscribed ? "已关注":"+关注";
 				};
@@ -277,11 +280,21 @@
 					});
 					
 					document.querySelector(".info-bar .icon-zan").addEventListener("tap", function(){
-						var self = this;
-						var curCount = parseInt(self.innerHTML);
-						parent.Kimkra.operation("video", videoInfo.id, "like", function(data){
-							self.innerHTML = curCount + 1;
-						});
+						if(videoInfo.bLike){
+							parent.mui.toast("您已点过赞!");
+						}else{
+							var self = this;
+							var curCount = parseInt(self.innerHTML);
+							parent.Kimkra.operation("video", videoInfo.id, "like", function(data){
+								self.innerHTML = curCount + 1;
+								self.classList.add("font-red");
+								videoInfo.bLike = true;
+								videoInfo.likeCount += 1;
+								parent.Kimkra.data.videoInfo[infoIndex] = videoInfo;
+								parent.Kimkra.data.videos.list = parent.Kimkra.data.videoInfo;
+								localStorage.setItem("video", JSON.stringify(parent.Kimkra.data.videos));
+							});
+						}
 					})
 					
 					document.getElementById("btnFollow").addEventListener("tap",function(e){
@@ -301,8 +314,8 @@
 								document.getElementById("btnFollow").innerHTML = "已关注";
 							}
 							parent.Kimkra.data.videoInfo[infoIndex] = videoInfo;
-							localStorage.setItem("video", JSON.stringify(parent.Kimkra.data.videoInfo));
 							parent.Kimkra.data.videos.list = parent.Kimkra.data.videoInfo;
+							localStorage.setItem("video", JSON.stringify(parent.Kimkra.data.videos));
 						});
 					})
 				};

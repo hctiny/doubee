@@ -43,8 +43,8 @@
 				minute = "0" + minute;
 			}
 			result = minute + ":" + result;
-		}else{
-			result =  "00:" + result;
+		} else {
+			result = "00:" + result;
 		}
 		if(hour > 0) {
 			if(hour < 10) {
@@ -92,11 +92,24 @@
 			dis_control.appendChild(_createElement("font", {
 				class: "flex-grow"
 			}));
+			var likeClass = "iconfont icon-zan";
+			if(data.bLike) {
+				likeClass += " font-red";
+			}
 			dis_control.appendChild(_createElement("font", {
-				class: "iconfont icon-zan",
+				class: likeClass,
 				innerText: data.likeCount,
-				tap:function(){
-					parent.Kimkra.operation("comment", data.id, "like");
+				tap: function(e) {
+					if(data.bLike) {
+						mui.toast("您已点过赞!");
+					} else {
+						var self = this;
+						var curCount = parseInt(self.innerHTML);
+						Kimkra.operation("comment", data.id, "like", function(data) {
+							self.innerHTML = curCount + 1;
+							self.classList.add("font-red");
+						});
+					}
 				}
 			}));
 			dis_control.appendChild(_createElement("font", {
