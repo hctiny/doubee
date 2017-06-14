@@ -78,11 +78,11 @@
 			mui(".main .mui-scroll-wrapper").scroll();
 			mui('.main .mui-off-canvas-wrap').offCanvas();
 			var ul = document.querySelector(".main .content .mui-table-view");
-			document.querySelector('.icon-ttpodicon1').addEventListener("tap", function(){
+			document.querySelector('.icon-ttpodicon1').addEventListener("tap", function() {
 				var videoId = localStorage.getItem("playVideoId");
-				if(videoId){
+				if(videoId) {
 					Kimkra.router.load("index.html?m=pages&a=videoViewer&vid=" + videoId);
-				}else{
+				} else {
 					mui.toast("您没有播放任何视频");
 				}
 			});
@@ -90,20 +90,23 @@
 				down: {
 					callback: function() {
 						var self = this;
-						Kimkra.setVideos("list",function(data){
+						Kimkra.setVideos("list", function(data) {
+							var _marker=ul.querySelector(".content-marker");
+							_marker&&_marker.remove();
+							ul.insertBefore(Kimkra.html('<div class="content-marker">刚才看到这里</div>')[0],ul.children[0])
 							ul.insertBefore(Kimkra.posterView(data.pageList.list), ul.children[0]);
 							self.endPullDownToRefresh();
-						},true,"up");
+						}, true, "up");
 					}
 				},
 				up: {
 					auto: true,
 					callback: function() {
 						var self = this;
-						Kimkra.setVideos("list",function(data){
+						Kimkra.setVideos("list", function(data) {
 							ul.appendChild(Kimkra.posterView(data.pageList.list));
 							self.endPullUpToRefresh();
-						},true,"down");
+						}, true, "down");
 					}
 				}
 			});

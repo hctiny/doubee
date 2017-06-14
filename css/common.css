@@ -106,6 +106,7 @@ footer a {
 .content-imgView {
 	background: #FFF;
 	position: relative;
+	margin: 0.5rem 0rem;
 }
 
 .content-imgView>.poster {
@@ -142,6 +143,7 @@ footer a {
 
 .content-imgView>.info-bar {
 	padding: 0rem 1rem 0.5rem 1rem;
+	margin: 0;
 }
 
 .content-imgView>.info-bar>label {
@@ -243,10 +245,10 @@ iframe {
 	width: 100%;
 }
 .content-marker{
-	padding: 0.5rem;
+	padding: 0.8rem;
 	text-align: center;
 	font-size: 1rem;
 	background: #fba6a6;
 	color: #FFF;
-	margin: 0.2rem 0rem;
+	margin: 0.5rem 0rem;
 }
