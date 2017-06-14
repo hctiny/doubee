@@ -141,7 +141,7 @@
 							var p = iframe.contentDocument.querySelector(".x-video-button");
 							p.dispatchEvent(new MouseEvent("click"));
 						}
-						console.log(p);
+						console.log(played);
 					});
 					window.addEventListener("touchend", function(e) {
 						if(e.target.nodeName === "IFRAME") {
@@ -156,6 +156,7 @@
 						}
 					});
 					window.addEventListener("pause", function(e) {
+						console.log(played)
 						if(played && !playEnd) {
 							iframe.contentWindow.player.pauseVideo();
 							console.log('pause');
@@ -164,7 +165,6 @@
 
 					function autoPlay() {
 						//哔了狗了 一会儿能自动播放 一会儿不能
-						console.log(iframe);
 						var playButton = iframe.contentDocument.querySelector(".x-video-button");
 						console.log(playButton)
 						if(playButton) {
@@ -207,7 +207,7 @@
 					});
 					
 					window.addEventListener("autoPlay", function(){
-						autoPlay.call(this);
+						//autoPlay.call(this);
 					});
 
 					function hideVideo() {
@@ -322,7 +322,6 @@
 
 				setTimeout(function() {
 					iframe = document.createElement("iframe");
-					console.log(iframe);
 					iframe.src = "youku.html";
 					document.querySelector(".poster").appendChild(iframe);
 					iframe.addEventListener("load", function() {

@@ -38,7 +38,7 @@
 					client_id: e.detail.appId,
 					vid: e.detail.videoId,
 					newPlayer: true,
-					autoplay:true,
+					autoplay:false,
 					events: {
 						onPlayEnd: function() {
 							window.parent.dispatchEvent(new CustomEvent("playEnd"));
