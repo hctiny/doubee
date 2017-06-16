@@ -447,8 +447,8 @@ function($) {
 			window.history.replaceState('', '', obj.url);
 		} else {
 			window.history.pushState('', '', obj.url);
+			this.histroys.pushMap(location.href);
 		}
-		this.histroys.pushMap(location.href);
 		var currentDoc = this.pageGroup.querySelector(".page-current");
 		this.currentPage = obj.url;
 		this._animateDocument($d, currentDoc, direct, obj.param);

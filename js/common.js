@@ -152,7 +152,7 @@
 		}));
 		content_imgView.appendChild(poster);
 		content_imgView.appendChild(_createElement("p", {
-			class: "title font-size13",
+			class: "title font-size13 warp2",
 			innerText: data.title
 		}));
 		var p = _createElement("p", {

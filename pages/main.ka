@@ -49,9 +49,7 @@
 			<div class="mui-content mui-scroll-wrapper">
 				<div class="mui-scroll content">
 					<ul class="mui-table-view">
-						<!--<div class="content-marker">
-								刚才看到这里
-						</div>-->
+						
 					</ul>
 				</div>
 				<footer>
