@@ -232,6 +232,7 @@ body {
 }
 
 .video-content .info-bar {
+	position: relative;
 	padding: 0 1rem;
 }
 
@@ -240,7 +241,7 @@ body {
 }
 
 .video-content button {
-	padding: 0.2rem 0.5rem 0.35rem 0.5rem;
+	padding: 0.2rem 0.5rem 0.4rem 0.5rem;
 	font-size: 1rem;
 	line-height: 1rem;
 	border-radius: 5px;
@@ -337,6 +338,7 @@ body {
 
 .discussWrapper>.discuss {
 	padding: 0.5rem;
+	position: relative;
 }
 
 .rss img.rssHead,
@@ -383,4 +385,15 @@ body {
 	margin: 0.5rem 0rem 0rem 0rem;
 	float: right;
 	padding: 0.4rem 2rem 0.45rem 2rem;
+}
+
+.more-operation{
+	position: absolute;
+	top: 2rem;
+	right: 1rem;
+	z-index: 1;
+}
+
+.more-operation .mui-table-view-cell:after{
+	left: 0;
 }

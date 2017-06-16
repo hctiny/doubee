@@ -113,7 +113,16 @@
 				}
 			}));
 			dis_control.appendChild(_createElement("font", {
-				class: "iconfont icon-ttpodicon"
+				class: "iconfont icon-ttpodicon",
+				tap:function(e){
+					this.parentElement.querySelector("#commentOperation"+data.id).style.display = "block";
+				}
+			}));
+			dis_control.appendChild(_createElement("ul", {
+				class: "mui-table-view more-operation",
+				style: "display: none;",
+				id:"commentOperation"+data.id,
+				innerHTML:'<li class="mui-table-view-cell"><a class="cai" data-id="'+data.id+'" data-dislike="'+data.bDislike+'">踩</a></li><li class="mui-table-view-cell"><a class="jubao" data-id="'+data.id+'">举报</a></li>'
 			}));
 			dis_content.appendChild(dis_control);
 			dis_content.appendChild(_createElement("font", {
