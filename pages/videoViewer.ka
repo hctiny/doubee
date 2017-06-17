@@ -17,12 +17,24 @@
 					}
 					var point = e.changedTouches[0];
 					var p = e.target.querySelector("iframe").contentDocument.elementFromPoint(point.clientX, point.clientY);
-					var _e = new TouchEvent(e.type, {
-						bubbles: true,
-						changedTouches: e.changedTouches,
-						touches: e.touches,
-					});
+					try{
+						console.log(e);
+						var _e = null;
+						if(mui.os.ios){
+							_e = document.createEvent('TouchEvent');
+							_e.initTouchEvent(e.type, true, e.cancelable, e.view, e.detail, point.screenX, point.screenY, point.clientX, point.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.touches, e.targetTouches, e.changedTouches, 1.0, 0.0);
+						}
+						if(mui.os.android){
+							_e = new TouchEvent(e.type, {
+								bubbles: true,
+								changedTouches: e.changedTouches,
+								touches: e.touches,
+							});
+						}
 					p && (p.dispatchEvent(_e));
+					}catch(err){
+						alert(err);
+					}
 				}
 				sliderGroup.addEventListener("touchmove", function(e) {
 					dispatchTouch.call(this, e);
