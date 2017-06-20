@@ -710,7 +710,6 @@ function($) {
 			type: type,
 			operation: operation
 		}, function(data) {
-			mui.toast('操作成功！');
 			callback && callback(data);
 		});
 	}
