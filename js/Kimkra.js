@@ -486,7 +486,7 @@ function($) {
 			memberId: null
 		}
 	};
-	Kimkra.aaa = tempVideos;
+	Kimkra.tempVideos = tempVideos;
 	$.init = function() {
 		!settings && (getSettings());
 		$.showIndicator();
@@ -515,6 +515,31 @@ function($) {
 					memberId: null
 				}
 			}
+		}
+	}
+
+	function setTempVideos(type, d) {
+		Kimkra.tempVideos.list = d.pageList.list;
+		Kimkra.tempVideos.temp.type = type;
+		switch(type) {
+			case "list":
+				var direction = arguments[2];
+				Kimkra.tempVideos.temp.direction = direction;
+				Kimkra.tempVideos.temp.downid = d.pageList.list[d.pageList.list.length - 1].id;
+				Kimkra.tempVideos.temp.topid = d.pageList.list[0].id;
+				break;
+			case "goodluck":
+				break;
+			case "upload":
+				var pageNum = arguments[2];
+				var memberId = arguments[3];
+				Kimkra.tempVideos.temp.pages = pageNum;
+				Kimkra.tempVideos.temp.memberId = memberId;
+				break;
+			case "favourite":
+				var pageNum = arguments[2];
+				Kimkra.tempVideos.temp.pages = pageNum;
+				break;
 		}
 	}
 
@@ -553,49 +578,63 @@ function($) {
 				break;
 		}
 		$.doAjax("video/videos", ajaxParams, function(d) {
-			d.pageList.list = d.pageList.list.sort(function(a,b){
+			d.pageList.list = d.pageList.list.sort(function(a, b) {
 				return b.id - a.id;
 			})
-			$.tempVideo(type, d, argFirst, argSecond);
+			setTempVideos(type, d, argFirst, argSecond);
 			callback && callback(d);
-		}, {async: async})
+		}, {
+			async: async
+		})
 	}
-	$.tempVideo = function(type, d) {
+	$.clearVideoCache = function() {
+		localStorage.removeItem("video");
+		initVideo();
+	}
+	$.getVideoCache = function() {
 		if(!$.data.videos) {
 			initVideo();
 		}
-		if(type !== $.data.videos.temp.type) {
-			$.data.videos.list = [];
-		}
-		$.data.videos.temp.type = type;
-		if(type == "list") {
-			var direction = arguments[2];
-			if(direction === "down") {
-				$.data.videos.list = $.data.videos.list.add(d.pageList.list);
-			} else {
-				$.data.videos.list = d.pageList.list.add($.data.videos.list);
+	}
+	$.setVideoCache = function() {
+		if(localStorage.getItem("video") == null){
+			$.data.videos.list = $.data.videos.list.add(Kimkra.tempVideos.list);
+			$.data.videos.temp = {
+				topid: Kimkra.tempVideos.temp.topid,
+				downid: Kimkra.tempVideos.temp.downid,
+				type: Kimkra.tempVideos.temp.type,
+				direction: Kimkra.tempVideos.temp.direction,
+				pages: Kimkra.tempVideos.temp.pages,
+				memberId: Kimkra.tempVideos.temp.memberId
 			}
-			$.data.videos.temp.direction = direction;
-		} else {
-			$.data.videos.list = $.data.videos.list.add(d.pageList.list);
+			return;
 		}
-		switch(type) {
-			case "list":
-				$.data.videos.temp.downid = $.data.videos.list[$.data.videos.list.length - 1].id;
-				$.data.videos.temp.topid = $.data.videos.list[0].id;
-				break;
-			case "goodluck":
-				break;
-			case "upload":
-				var pageNum = arguments[2];
-				var memberId = arguments[3];
-				$.data.videos.temp.pages = pageNum;
-				$.data.videos.temp.memberId = memberId;
-				break;
-			case "favourite":
-				var pageNum = arguments[2];
-				$.data.videos.temp.pages = pageNum;
-				break;
+		if($.data.videos.temp.type != Kimkra.tempVideos.temp.type) {
+			$.data.videos = Kimkra.tempVideos;
+		} else {
+			switch(Kimkra.tempVideos.temp.type) {
+				case "list":
+					if(Kimkra.tempVideos.temp.direction === "up" ){
+						$.data.videos.list = Kimkra.tempVideos.list.add($.data.videos.list);
+					}else{
+						$.data.videos.list = $.data.videos.list.add(Kimkra.tempVideos.list);
+					}
+					$.data.videos.temp.downid = $.data.videos.list[$.data.videos.list.length - 1].id;
+					$.data.videos.temp.topid = $.data.videos.list[0].id;
+					break;
+				case "goodluck":
+					$.data.videos.list = $.data.videos.list.add(Kimkra.tempVideos.list);
+					break;
+				case "upload":
+					$.data.videos.list = $.data.videos.list.add(Kimkra.tempVideos.list);
+					$.data.videos.temp.pages = Kimkra.tempVideos.temp.pages;
+					$.data.videos.temp.memberId = Kimkra.tempVideos.temp.memberId;
+					break;
+				case "favourite":
+					$.data.videos.list = $.data.videos.list.add(Kimkra.tempVideos.list);
+					$.data.videos.temp.pages = Kimkra.tempVideos.temp.pages;
+					break;
+			}
 		}
 		localStorage.setItem("video", JSON.stringify($.data.videos));
 	}
@@ -706,7 +745,7 @@ function($) {
 		})
 	}
 	$.operation = function(type, id, operation, callback) {
-		$.doAjax("video/operation/"+id, {
+		$.doAjax("video/operation/" + id, {
 			type: type,
 			operation: operation
 		}, function(data) {
@@ -718,31 +757,39 @@ function($) {
 		if(!$.data.videos) {
 			initVideo();
 		}
-		var videoIndex = $.data.videos.list.findIndex(function(v){
+		var videoIndex = $.data.videos.list.findIndex(function(v) {
 			return v.id == videoId;
 		});
-		if($.data.videos.temp.type === "list"){
-			if(direction === "left" && videoIndex > $.data.videos.list.length - 3){
-				$.setVideos($.data.videos.temp.type, null,true, "down");
-			}else if(direction == "right" && videoIndex < 2){
-				$.setVideos($.data.videos.temp.type, null,true, "up");
-			}else if(direction == "all"){
-				if(videoIndex < 2){
-					$.setVideos($.data.videos.temp.type, function(d){
+		if($.data.videos.temp.type === "list") {
+			if(direction === "left" && videoIndex > $.data.videos.list.length - 3) {
+				$.setVideos($.data.videos.temp.type, function(d){
+					$.setVideoCache();
+				}, true, "down");
+			} else if(direction == "right" && videoIndex < 2) {
+				$.setVideos($.data.videos.temp.type, function(d){
+					$.setVideoCache();
+				}, true, "up");
+			} else if(direction == "all") {
+				if(videoIndex < 2) {
+					$.setVideos($.data.videos.temp.type, function(d) {
+						$.setVideoCache();
 						resultCall($.data.videos.list);
-					},false, "up");
-				}else if(videoIndex > $.data.videos.list.length - 3){
-					$.setVideos($.data.videos.temp.type, function(d){
+					}, false, "up");
+				} else if(videoIndex > $.data.videos.list.length - 3) {
+					$.setVideos($.data.videos.temp.type, function(d) {
+						$.setVideoCache();
 						resultCall($.data.videos.list);
-					},false, "down");
-				}else{
+					}, false, "down");
+				} else {
 					resultCall($.data.videos.list);
 				}
 				return;
 			}
-		}else{
-			if(videoIndex > $.data.videos.list.length - 3){
-				$.setVideos($.data.videos.temp.type, null,true, $.data.videos.temp.pages, $.data.videos.temp.memberId);
+		} else {
+			if(videoIndex > $.data.videos.list.length - 3) {
+				$.setVideos($.data.videos.temp.type, function(d){
+					$.setVideoCache();
+				}, true, $.data.videos.temp.pages + 1, $.data.videos.temp.memberId);
 			}
 		}
 		resultCall($.data.videos.list);
