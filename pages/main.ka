@@ -27,7 +27,7 @@
 							</a>
 						</li>
 						<li class="mui-table-view-cell">
-							<a class="mui-navigate-right" href="index.html?m=pages&a=videoViewer&goodluck=true">
+							<a id="goodluck" class="mui-navigate-right">
 								手气不错
 							</a>
 						</li>
@@ -83,6 +83,14 @@
 				} else {
 					mui.toast("您没有播放任何视频");
 				}
+			});
+			
+			document.getElementById("goodluck").addEventListener("tap", function(){
+				Kimkra.setVideos("goodluck", function(d) {
+					Kimkra.clearVideoCache();
+					Kimkra.setVideoCache();
+					Kimkra.router.load("index.html?m=pages&a=videoViewer&vid=" + d.pageList.list[0].id);
+				}, true);
 			});
 			mui(".main .mui-scroll.content").pullToRefresh({
 				down: {

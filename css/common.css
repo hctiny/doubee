@@ -252,3 +252,14 @@ iframe {
 	color: #FFF;
 	margin: 0.5rem 0rem;
 }
+
+.not-more{
+	text-align: center;
+	padding: 10rem 0;
+}
+
+.not-more>a{
+	display: inline;
+	line-height: 1.6rem;
+	font-size: 1.2rem;
+}
