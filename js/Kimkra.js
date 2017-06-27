@@ -498,6 +498,19 @@ function($) {
 		$.dispatchTouch = true;
 		initVideo();
 	}
+	$.initTempVideo = function() {
+		Kimkra.tempVideos = {
+			list: [],
+			temp: {
+				topid: null,
+				downid: null,
+				type: null,
+				direction: null,
+				pages: null,
+				memberId: null
+			}
+		}
+	}
 
 	function initVideo() {
 		var videos = JSON.parse(localStorage.getItem("video"));
@@ -507,8 +520,8 @@ function($) {
 			$.data.videos = {
 				list: [],
 				temp: {
-					topid: 0,
-					downid: 0,
+					topid: null,
+					downid: null,
 					type: null,
 					direction: null,
 					pages: null,
@@ -518,21 +531,38 @@ function($) {
 		}
 	}
 
-	function setTempVideos(type, d) {
-		Kimkra.tempVideos.list = d.pageList.list;
-		Kimkra.tempVideos.temp.type = type;
+	$.setTempVideos = function(type, d) {
+		if(Kimkra.tempVideos.temp.type != type) {
+			Kimkra.tempVideos.list = d.pageList.list;
+			Kimkra.tempVideos.temp.type = type;
+		} else {
+			if(type == "list") {
+				var direction = arguments[2];
+				if(direction == "up") {
+					Kimkra.tempVideos.list = d.pageList.list.add(Kimkra.tempVideos.list);
+				} else {
+					Kimkra.tempVideos.list = Kimkra.tempVideos.list.add(d.pageList.list);
+				}
+			} else {
+				if(arguments[3] && arguments[3] != Kimkra.tempVideos.temp.memberId) {
+					Kimkra.tempVideos.list = d.pageList.list;
+				} else {
+					Kimkra.tempVideos.list = Kimkra.tempVideos.list.add(d.pageList.list);
+				}
+			}
+		}
 		switch(type) {
 			case "list":
 				var direction = arguments[2];
 				Kimkra.tempVideos.temp.direction = direction;
-				if(direction == "down"){
+				if(direction == "down") {
 					Kimkra.tempVideos.temp.downid = d.pageList.list[d.pageList.list.length - 1].id;
-					if(Kimkra.tempVideos.temp.topid === null){
+					if(Kimkra.tempVideos.temp.topid === null) {
 						Kimkra.tempVideos.temp.topid = d.pageList.list[0].id;
 					}
-				}else{
+				} else {
 					Kimkra.tempVideos.temp.topid = d.pageList.list[0].id;
-					if(Kimkra.tempVideos.temp.downid === null){
+					if(Kimkra.tempVideos.temp.downid === null) {
 						Kimkra.tempVideos.temp.downid = d.pageList.list[d.pageList.list.length - 1].id;
 					}
 				}
@@ -590,8 +620,8 @@ function($) {
 			d.pageList.list = d.pageList.list.sort(function(a, b) {
 				return b.id - a.id;
 			})
-			setTempVideos(type, d, argFirst, argSecond);
-			callback && callback(d);
+			//			setTempVideos(type, d, argFirst, argSecond);
+			callback && callback(d, type, argFirst, argSecond);
 		}, {
 			async: async
 		})
@@ -605,45 +635,51 @@ function($) {
 			initVideo();
 		}
 	}
-	$.setVideoCache = function() {
-		if(localStorage.getItem("video") == null){
-			$.data.videos.list = $.data.videos.list.add(Kimkra.tempVideos.list);
-			$.data.videos.temp = {
-				topid: Kimkra.tempVideos.temp.topid,
-				downid: Kimkra.tempVideos.temp.downid,
-				type: Kimkra.tempVideos.temp.type,
-				direction: Kimkra.tempVideos.temp.direction,
-				pages: Kimkra.tempVideos.temp.pages,
-				memberId: Kimkra.tempVideos.temp.memberId
-			}
-			return;
-		}
-		if($.data.videos.temp.type != Kimkra.tempVideos.temp.type) {
-			$.data.videos = Kimkra.tempVideos;
+	$.setVideoCache = function(type, d) {
+		if($.data.videos.temp.type != type) {
+			$.data.videos.list = d;
+			$.data.videos.temp.type = type;
 		} else {
-			switch(Kimkra.tempVideos.temp.type) {
-				case "list":
-					if(Kimkra.tempVideos.temp.direction === "up" ){
-						$.data.videos.list = Kimkra.tempVideos.list.add($.data.videos.list);
-					}else{
-						$.data.videos.list = $.data.videos.list.add(Kimkra.tempVideos.list);
-					}
-					$.data.videos.temp.downid = $.data.videos.list[$.data.videos.list.length - 1].id;
-					$.data.videos.temp.topid = $.data.videos.list[0].id;
-					break;
-				case "goodluck":
-					$.data.videos.list = $.data.videos.list.add(Kimkra.tempVideos.list);
-					break;
-				case "upload":
-					$.data.videos.list = $.data.videos.list.add(Kimkra.tempVideos.list);
-					$.data.videos.temp.pages = Kimkra.tempVideos.temp.pages;
-					$.data.videos.temp.memberId = Kimkra.tempVideos.temp.memberId;
-					break;
-				case "favourite":
-					$.data.videos.list = $.data.videos.list.add(Kimkra.tempVideos.list);
-					$.data.videos.temp.pages = Kimkra.tempVideos.temp.pages;
-					break;
+			if(type == "list") {
+				var direction = arguments[2];
+				direction = direction ? direction : Kimkra.tempVideos.temp.direction;
+				if(direction == "up") {
+					$.data.videos.list = d.add($.data.videos.list);
+				} else {
+					$.data.videos.list = $.data.videos.list.add(d);
+				}
+			} else {
+				$.data.videos.list = $.data.videos.list.add(d);
 			}
+		}
+		switch(type) {
+			case "list":
+				var direction = arguments[2];
+				$.data.videos.temp.direction = direction ? direction : Kimkra.tempVideos.temp.direction;
+				if(direction == "down") {
+					$.data.videos.temp.downid = d[d.length - 1].id;
+					if($.data.videos.temp.topid === null) {
+						$.data.videos.temp.topid = d[0].id;
+					}
+				} else {
+					$.data.videos.temp.topid = d[0].id;
+					if($.data.videos.temp.downid === null) {
+						$.data.videos.temp.downid = d[d.length - 1].id;
+					}
+				}
+				break;
+			case "goodluck":
+				break;
+			case "upload":
+				var pageNum = arguments[2];
+				var memberId = arguments[3];
+				$.data.videos.temp.pages = pageNum ? pageNum : Kimkra.tempVideos.temp.pages;
+				$.data.videos.temp.memberId = memberId ? memberId : Kimkra.tempVideos.temp.memberId;
+				break;
+			case "favourite":
+				var pageNum = arguments[2];
+				$.data.videos.temp.pages = pageNum ? pageNum : Kimkra.tempVideos.temp.pages;
+				break;
 		}
 		localStorage.setItem("video", JSON.stringify($.data.videos));
 	}
@@ -771,22 +807,22 @@ function($) {
 		});
 		if($.data.videos.temp.type === "list") {
 			if(direction === "left" && videoIndex > $.data.videos.list.length - 3) {
-				$.setVideos($.data.videos.temp.type, function(d){
-					$.setVideoCache();
+				$.setVideos($.data.videos.temp.type, function(d) {
+					$.setVideoCache(arguments[1], d, arguments[2], arguments[3]);
 				}, true, "down");
 			} else if(direction == "right" && videoIndex < 2) {
-				$.setVideos($.data.videos.temp.type, function(d){
-					$.setVideoCache();
+				$.setVideos($.data.videos.temp.type, function(d) {
+					$.setVideoCache(arguments[1], d.pageList.list, arguments[2], arguments[3]);
 				}, true, "up");
 			} else if(direction == "all") {
 				if(videoIndex < 2) {
 					$.setVideos($.data.videos.temp.type, function(d) {
-						$.setVideoCache();
+						$.setVideoCache(arguments[1], d.pageList.list, arguments[2], arguments[3]);
 						resultCall($.data.videos.list);
 					}, false, "up");
 				} else if(videoIndex > $.data.videos.list.length - 3) {
 					$.setVideos($.data.videos.temp.type, function(d) {
-						$.setVideoCache();
+						$.setVideoCache(arguments[1], d.pageList.list, arguments[2], arguments[3]);
 						resultCall($.data.videos.list);
 					}, false, "down");
 				} else {
@@ -796,8 +832,8 @@ function($) {
 			}
 		} else {
 			if(videoIndex > $.data.videos.list.length - 3) {
-				$.setVideos($.data.videos.temp.type, function(d){
-					$.setVideoCache();
+				$.setVideos($.data.videos.temp.type, function(d) {
+					$.setVideoCache(arguments[1], d.pageList.list, arguments[2], arguments[3]);
 				}, true, $.data.videos.temp.pages + 1, $.data.videos.temp.memberId);
 			}
 		}

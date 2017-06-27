@@ -12,6 +12,7 @@
 	</div>
 	<script>
 		(function() {
+			Kimkra.initTempVideo();
 			mui(".rssDetail .mui-scroll-wrapper").scroll();
 			var ul = document.querySelector(".rssDetail .mui-table-view");
 			ul.setAttribute("page", "1");
@@ -23,6 +24,7 @@
 						var self = this;
 						var page = ~~ul.getAttribute("page");
 						Kimkra.setVideos("upload",function(d){
+							Kimkra.setTempVideos(arguments[1], d, arguments[2], arguments[3]);
 							if(d.pageList.lastPage < page) {
 								self.endPullUpToRefresh(true);
 								return;

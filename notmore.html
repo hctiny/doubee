@@ -23,7 +23,7 @@
 			document.querySelector("a").addEventListener("tap",function(e){
 				parent.Kimkra.setVideos("goodluck", function(d) {
 					parent.Kimkra.clearVideoCache();
-					parent.Kimkra.setVideoCache();
+					parent.Kimkra.setVideoCache(arguments[1], d.pageList.list);
 					console.log('111111');
 					parent.Kimkra.router.load("index.html?m=pages&a=videoViewer&vid=" + d.pageList.list[0].id);
 				}, true);
