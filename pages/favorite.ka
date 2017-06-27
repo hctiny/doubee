@@ -18,6 +18,7 @@
 						var self = this;
 						var page = ~~ul.getAttribute("page");
 						Kimkra.setVideos("favourite",function(d){
+							Kimkra.setTempVideos(arguments[1], d, arguments[2], arguments[3]);
 							if(d.pageList.lastPage < page) {
 								self.endPullUpToRefresh(true);
 								return;

@@ -144,7 +144,7 @@
 					Kimkra.setVideos("goodluck", function(d) {
 						sliderGroup.innerHTML = "";
 						Kimkra.clearVideoCache();
-						Kimkra.setVideoCache();
+						Kimkra.setVideoCache(arguments[1], d.pageList.list);
 						currentId = d.pageList.list[0].id;
 						Kimkra.getVideoList("all", currentId, function(data) {
 							Kimkra.data.videoInfo = data;
