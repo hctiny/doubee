@@ -525,8 +525,17 @@ function($) {
 			case "list":
 				var direction = arguments[2];
 				Kimkra.tempVideos.temp.direction = direction;
-				Kimkra.tempVideos.temp.downid = d.pageList.list[d.pageList.list.length - 1].id;
-				Kimkra.tempVideos.temp.topid = d.pageList.list[0].id;
+				if(direction == "down"){
+					Kimkra.tempVideos.temp.downid = d.pageList.list[d.pageList.list.length - 1].id;
+					if(Kimkra.tempVideos.temp.topid === null){
+						Kimkra.tempVideos.temp.topid = d.pageList.list[0].id;
+					}
+				}else{
+					Kimkra.tempVideos.temp.topid = d.pageList.list[0].id;
+					if(Kimkra.tempVideos.temp.downid === null){
+						Kimkra.tempVideos.temp.downid = d.pageList.list[d.pageList.list.length - 1].id;
+					}
+				}
 				break;
 			case "goodluck":
 				break;
@@ -554,9 +563,9 @@ function($) {
 				var direction = argFirst;
 				var start = 0;
 				if(direction === "up") {
-					start = $.data.videos.temp.topid
+					start = Kimkra.tempVideos.temp.topid ? Kimkra.tempVideos.temp.topid : 0;
 				} else {
-					start = $.data.videos.temp.downid
+					start = Kimkra.tempVideos.temp.downid ? Kimkra.tempVideos.temp.downid : 0;
 				}
 				ajaxParams["pageSize"] = 10;
 				ajaxParams["direction"] = direction;
