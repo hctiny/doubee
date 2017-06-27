@@ -197,7 +197,6 @@
 		var self = this;
 		var t = document.createDocumentFragment();
 		data.forEach(function(d) {
-			console.log(d)
 			t.appendChild(self.videoview(d))
 		})
 		return t;

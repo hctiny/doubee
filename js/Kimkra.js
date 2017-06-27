@@ -496,6 +496,7 @@ function($) {
 		$.hideIndicator();
 		$.dispatchSlider = true;
 		$.dispatchTouch = true;
+		$.autoLoad = true;
 		initVideo();
 	}
 

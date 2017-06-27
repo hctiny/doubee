@@ -49,7 +49,7 @@
 			<div class="mui-content mui-scroll-wrapper">
 				<div class="mui-scroll content">
 					<ul class="mui-table-view">
-						
+
 					</ul>
 				</div>
 				<footer>
@@ -84,8 +84,8 @@
 					mui.toast("您没有播放任何视频");
 				}
 			});
-			
-			document.getElementById("goodluck").addEventListener("tap", function(){
+
+			document.getElementById("goodluck").addEventListener("tap", function() {
 				Kimkra.setVideos("goodluck", function(d) {
 					Kimkra.clearVideoCache();
 					Kimkra.setVideoCache();
@@ -97,16 +97,16 @@
 					callback: function() {
 						var self = this;
 						Kimkra.setVideos("list", function(data) {
-							var _marker=ul.querySelector(".content-marker");
-							_marker&&_marker.remove();
-							ul.insertBefore(Kimkra.html('<div class="content-marker">刚才看到这里</div>')[0],ul.children[0])
+							var _marker = ul.querySelector(".content-marker");
+							_marker && _marker.remove();
+							ul.insertBefore(Kimkra.html('<div class="content-marker">刚才看到这里</div>')[0], ul.children[0])
 							ul.insertBefore(Kimkra.posterView(data.pageList.list), ul.children[0]);
 							self.endPullDownToRefresh();
 						}, true, "up");
 					}
 				},
 				up: {
-					auto: true,
+					auto: Kimkra.autoLoad,
 					callback: function() {
 						var self = this;
 						Kimkra.setVideos("list", function(data) {
@@ -122,22 +122,16 @@
 				document.querySelector(".main .userName").innerText = Kimkra.data.userInfo.member.name;
 			}
 
-			//function bindData(direction) {
-			//	var self = this;
-			//	Kimkra.doAjax("video/videos", {
-			//		pageSize: 10,
-			//		type: "list",
-			//		direction: direction
-			//	}, function(d) {
-			//		$.tempVideo(d.pageList.list,{
-			//			type:"list",
-			//			direction:direction
-			//		});
-			//		ul.appendChild(Kimkra.posterView(d.pageList.list));
-			//		self.endPullUpToRefresh();
-			//	})
-			//}
+			function bindData() {
+				if(!Kimkra.autoLoad){
+					ul.insertBefore(Kimkra.posterView(Kimkra.data.videos.list), ul.children[0]);
+					console.log(Kimkra.data.videos)
+				}
+				
+				Kimkra.autoLoad = false;
+			}
 			bindUser();
+			bindData();
 		})()
 	</script>
 </div>
