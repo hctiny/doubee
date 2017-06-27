@@ -142,7 +142,7 @@
 
 	Kimkra.videoview = function(data) {
 		var content_imgView = _createElement("div", {
-			class: "content-imgView"
+			class: "content-imgView vid"+data.id
 		});
 		var poster = _createElement("div", {
 			class: "poster"

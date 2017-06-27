@@ -1,49 +1,46 @@
 <div class="page page-current main">
 	<div class="mui-off-canvas-wrap mui-draggable mui-slide-in">
 		<aside id="offCanvasSide" class="mui-off-canvas-right">
-			<div class="mui-scroll-wrapper">
-				<div class="mui-scroll">
-					<ul class="mui-table-view mui-table-view-inverted mui-table-view-noline">
-						<li class="mui-table-view-cell">
-							<a>
-								<img class="headImg mui-pull-right" src="img/head.jpg" />
-							</a>
-						</li>
-						<li class="mui-table-view-cell">
-							<a>
-								<label class="mui-pull-right font-size12 userName">用户名</label>
-							</a>
-						</li>
-					</ul>
-					<ul class="mui-table-view mui-table-view-inverted" style="margin-top: 1rem;">
-						<li class="mui-table-view-cell">
-							<a class="mui-navigate-right" href="index.html?m=pages&a=favorite">
-								我的收藏
-							</a>
-						</li>
-						<li class="mui-table-view-cell">
-							<a class="mui-navigate-right" href="index.html?m=pages&a=myTag">
-								我的爱好
-							</a>
-						</li>
-						<li class="mui-table-view-cell">
-							<a id="goodluck" class="mui-navigate-right">
-								手气不错
-							</a>
-						</li>
-						<li class="mui-table-view-cell">
-							<a class="mui-navigate-right" href="index.html?m=pages&a=settings">
-								设置
-							</a>
-						</li>
-						<li class="mui-table-view-cell">
-							<a class="mui-navigate-right">
-								关于
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
+
+			<ul class="mui-table-view mui-table-view-inverted mui-table-view-noline">
+				<li class="mui-table-view-cell">
+					<a>
+						<img class="headImg mui-pull-right" src="img/head.jpg" />
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a>
+						<label class="mui-pull-right font-size12 userName">用户名</label>
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view mui-table-view-inverted" style="margin-top: 1rem;">
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" href="index.html?m=pages&a=favorite">
+						我的收藏
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" href="index.html?m=pages&a=myTag">
+						我的爱好
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a id="goodluck" class="mui-navigate-right">
+						手气不错
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" href="index.html?m=pages&a=settings">
+						设置
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right">
+						关于
+					</a>
+				</li>
+			</ul>
 		</aside>
 		<div class="mui-inner-wrap">
 			<div class="mui-content mui-scroll-wrapper">
@@ -73,7 +70,7 @@
 	</div>
 	<script>
 		(function() {
-			mui(".main .mui-scroll-wrapper").scroll();
+			var Mainscroll = mui(".main .mui-scroll-wrapper").scroll();
 			mui('.main .mui-off-canvas-wrap').offCanvas();
 			var ul = document.querySelector(".main .content .mui-table-view");
 			document.querySelector('.icon-ttpodicon1').addEventListener("tap", function() {
@@ -92,6 +89,7 @@
 					Kimkra.router.load("index.html?m=pages&a=videoViewer&vid=" + d.pageList.list[0].id);
 				}, true);
 			});
+			bindData();
 			mui(".main .mui-scroll.content").pullToRefresh({
 				down: {
 					callback: function() {
@@ -123,15 +121,18 @@
 			}
 
 			function bindData() {
-				if(!Kimkra.autoLoad){
+				if(Kimkra.data.videos.temp.type !== "list") {
+					Kimkra.autoLoad = true;
+				} else {
 					ul.insertBefore(Kimkra.posterView(Kimkra.data.videos.list), ul.children[0]);
-					console.log(Kimkra.data.videos)
+					var playedId = "vid" + localStorage.getItem('playVideoId');
+					var playedDom = document.querySelector("." + playedId);
+					Mainscroll.scrollTo(0, -playedDom.offsetTop);
+					Kimkra.autoLoad = false;
 				}
-				
-				Kimkra.autoLoad = false;
 			}
 			bindUser();
-			bindData();
+
 		})()
 	</script>
 </div>
