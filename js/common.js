@@ -142,7 +142,7 @@
 
 	Kimkra.videoview = function(data) {
 		var content_imgView = _createElement("div", {
-			class: "content-imgView"
+			class: "content-imgView vid"+data.id
 		});
 		var poster = _createElement("div", {
 			class: "poster"
@@ -163,7 +163,7 @@
 		}));
 		content_imgView.appendChild(poster);
 		content_imgView.appendChild(_createElement("p", {
-			class: "title font-size13",
+			class: "title font-size13 warp2",
 			innerText: data.title
 		}));
 		var p = _createElement("p", {
@@ -197,7 +197,6 @@
 		var self = this;
 		var t = document.createDocumentFragment();
 		data.forEach(function(d) {
-			console.log(d)
 			t.appendChild(self.videoview(d))
 		})
 		return t;

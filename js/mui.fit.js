@@ -7172,7 +7172,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 			this.options = $.extend(true, {
 				down: {
 					tips: {
-						colors: ['008000', 'd8ad44', 'd00324', 'dc00b8', '017efc'],
+						colors:['ff7878','35ad0e', 'd8ad44', 'd00324', 'dc00b8', '017efc'],
 						size: 200, //width=height=size;x=y=size/2;radius=size/4
 						lineWidth: 15,
 						duration: 1000,
@@ -7263,7 +7263,7 @@ Function.prototype.bind = Function.prototype.bind || function(to) {
 				rad = Math.PI / 180,
 				duration = 1000,
 				tail_duration = 1000 * 2.5,
-				colors = ['35ad0e', 'd8ad44', 'd00324', 'dc00b8', '017efc'],
+				colors = ['ff7878','35ad0e', 'd8ad44', 'd00324', 'dc00b8', '017efc'],
 				rAF = null;
 
 			function easeLinear(currentIteration, startValue, changeInValue, totalIterations) {

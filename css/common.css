@@ -136,8 +136,8 @@ footer a {
 }
 
 .content-imgView>.title {
-	padding: 0.5rem 1rem;
-	margin: 0;
+	margin: 0.5rem 1rem;
+	padding: 0;
 	font-weight: normal;
 }
 
@@ -248,7 +248,7 @@ iframe {
 	padding: 0.8rem;
 	text-align: center;
 	font-size: 1rem;
-	background: #fba6a6;
+	background: #ff7878;
 	color: #FFF;
 	margin: 0.5rem 0rem;
 }
